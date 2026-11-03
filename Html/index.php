@@ -12,12 +12,10 @@
 </head>
 <body>
 
-<!-- Pozadí: ryby a bubliny (kreslí JS/ocean.js) -->
 <canvas id="ocean" aria-hidden="true"></canvas>
 
 <div class="container py-4">
 
-    <!-- Navigace -->
     <nav class="navbar navbar-expand-sm navbar-dark glass glass-nav rounded-pill px-3 py-2 mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.html">
@@ -40,7 +38,7 @@
     <main class="row g-4">
         <section class="col-lg-8">
             <article class="glass glass-card hero rounded-5 p-4 p-md-5 h-100">
-                <h1 class="display-4 fw-bold">Rakety-23</h1>
+                <h1 class="display-4 fw-bold">Vsechno je jedno</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu elit porta, pharetra lacus non, condimentum risus. Sed feugiat risus non tempus vulputate. Curabitur porttitor ligula quis tellus porttitor, at dapibus libero molestie. Duis ut risus ut mi volutpat pretium vitae eu turpis. Morbi congue vehicula condimentum. Curabitur euismod mi ornare arcu pellentesque tempor. Suspendisse aliquam eu velit et imperdiet. In hendrerit libero ac quam sodales semper. Aliquam erat volutpat. Nullam iaculis odio sit amet ante hendrerit, sit amet porta magna faucibus. Vestibulum cursus massa sit amet nisi tincidunt, quis pellentesque dolor tincidunt. Mauris vestibulum vel turpis non tincidunt. Cras laoreet, libero a tempus placerat, felis lectus tempus ex, vel laoreet lacus tortor in libero. Mauris id turpis dapibus, laoreet eros at, ultricies dui. Morbi urna urna, venenatis vel porttitor vitae, pellentesque sit amet lacus. Phasellus quis orci id sapien efficitur scelerisque.</p>
                 <a href="javascript:void(0)" class="btn btn-glass rounded-pill px-4 mt-2">Zjistit více</a>
             </article>
@@ -48,7 +46,7 @@
 
         <aside class="col-lg-4">
             <article class="glass glass-card rounded-5 p-4 p-md-5 h-100">
-                <h2 class="fw-bold">Tarantulkus</h2>
+                <h2 class="fw-bold">Bleh</h2>
                 <p>Donec vitae vestibulum dolor, in consequat eros. Quisque eu fringilla eros. Suspendisse porta ligula risus. Duis ipsum quam, facilisis vitae lectus eget, vulputate suscipit nunc. Aenean scelerisque, risus eget cursus aliquet, metus dui aliquet nibh, non elementum nisi felis a lectus. In eget nulla non dolor facilisis viverra id eu dolor. Donec rutrum dui tellus, nec fermentum leo rutrum non. Integer ac libero nec risus aliquet dignissim. Maecenas interdum dui a ante varius aliquet.</p>
             </article>
         </aside>
