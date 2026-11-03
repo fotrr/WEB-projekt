@@ -1,9 +1,8 @@
-// Podmořský svět: ryby (i hejna), bubliny, písečné dno, řasy, tráva a korály
 (() => {
     const canvas = document.getElementById("ocean");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    const reduceMotion = false; // pohyb je vždy zapnutý (ignoruje systémové "omezit pohyb")
+    const reduceMotion = false; 
 
     const rand = (a, b) => a + Math.random() * (b - a);
     const pick = arr => arr[Math.floor(Math.random() * arr.length)];
@@ -16,11 +15,8 @@
     let decor = null;
     const mouse = { x: -9999, y: -9999 };
 
-    // výška písečného dna v bodě x
     const duneY = x => H - seaH * 0.72 + Math.sin(x / 170) * 9 + Math.sin(x / 61 + 1) * 3;
     const swimMax = () => H - seaH - 30;
-
-    /* ---------- STATICKÉ DNO (kreslí se jednou do vedlejšího plátna) ---------- */
 
     function branch(c, x, y, len, ang, d, w, col) {
         if (d === 0) { c.fillStyle = col; c.beginPath(); c.arc(x, y, w * 0.9, 0, 6.3); c.fill(); return; }
@@ -59,7 +55,6 @@
         const c = decor.getContext("2d");
         c.scale(dpr, dpr);
 
-        // písek
         const g = c.createLinearGradient(0, H - seaH, 0, H);
         g.addColorStop(0, "#d8c58f"); g.addColorStop(0.5, "#a98f5a"); g.addColorStop(1, "#4b3f27");
         c.fillStyle = g;
@@ -67,14 +62,12 @@
         for (let x = 0; x <= W + 8; x += 8) c.lineTo(x, duneY(x));
         c.lineTo(W, H); c.closePath(); c.fill();
 
-        // zrníčka písku
         for (let i = 0; i < W / 4; i++) {
             const x = rand(0, W), y = rand(duneY(x) + 4, H);
             c.fillStyle = Math.random() < 0.5 ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.15)";
             c.fillRect(x, y, 2, 2);
         }
 
-        // kameny
         for (let i = 0; i < Math.max(4, W / 220); i++) {
             const x = rand(0, W), r = rand(14, 34), y = duneY(x) + 4;
             const rg = c.createRadialGradient(x - r * 0.3, y - r * 0.6, 2, x, y, r * 1.2);
@@ -83,7 +76,6 @@
             c.beginPath(); c.ellipse(x, y, r, r * 0.6, 0, Math.PI, 0); c.fill();
         }
 
-        // korály
         const count = Math.max(4, Math.round(W / 140));
         for (let i = 0; i < count; i++) {
             const x = rand(10, W - 10), y = duneY(x) + 6, col = pick(CORAL_COLORS);
@@ -93,8 +85,6 @@
             else domeCoral(c, x, y, rand(22, 36), col);
         }
     }
-
-    /* ---------- ŘASY, TRÁVA, PRAMENY BUBLIN ---------- */
 
     function buildPlants() {
         weeds = Array.from({ length: Math.round(W / 55) }, () => ({
@@ -131,8 +121,6 @@
         ctx.quadraticCurveTo(b.x + sway * 0.5, base - b.h * 0.55, b.x + sway, base - b.h);
         ctx.stroke();
     }
-
-    /* ---------- RYBY ---------- */
 
     class Fish {
         constructor(initial, opts) { this.opts = opts || null; this.reset(initial); }
@@ -202,8 +190,6 @@
         }
     }
 
-    /* ---------- BUBLINY ---------- */
-
     class Bubble {
         constructor(x, y) {
             this.r = rand(2, 11);
@@ -238,8 +224,6 @@
             if (Math.random() < 0.07) bubbles.push(new Bubble(v.x + rand(-5, 5), duneY(v.x) - 2));
         }
     }
-
-    /* ---------- HLAVNÍ SMYČKA ---------- */
 
     function build() {
         dpr = Math.min(window.devicePixelRatio || 1, 2);
