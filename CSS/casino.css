@@ -1,0 +1,1512 @@
+/* ==========================================================================
+   Meruňková Šplouchačka - Dragon Palace Imperial Casino Styles
+   ========================================================================== */
+
+:root {
+    --palace-red: #8b0000;
+    --palace-crimson: #a81c1c;
+    --palace-dark: #0f0406;
+    --palace-gold: #ffd700;
+    --palace-gold-dark: #d97706;
+    --palace-amber: #f97316;
+    --palace-apricot: #fb923c;
+    --palace-jade: #059669;
+    --palace-silk: rgba(26, 7, 10, 0.92);
+    --palace-border: rgba(255, 215, 0, 0.45);
+    --palace-glow: rgba(255, 215, 0, 0.35);
+}
+
+#festivalCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+}
+
+#festivalCanvas { display:none; }
+.casino-3d-world { position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.92; }
+body:has(.casino-3d-world) { background:radial-gradient(ellipse at 52% 14%,#182032 0%,#0a0d17 48%,#08090e 100%); }
+body:has(.casino-3d-world) > .container { position:relative;z-index:1; }
+body.casino-3d-fallback { background:radial-gradient(ellipse at 50% 0,#263047,#10111a 55%,#08090e); }
+.palace-header,.palace-tabs,.palace-arena { background-color:rgba(14,10,14,.78);backdrop-filter:blur(12px); }
+.palace-ambience { opacity:.55; }
+.outside-palace-btn .roulette-chip-stack { left:auto;right:5px;top:4px;transform:none;flex-direction:row;gap:2px; }
+.outside-palace-btn .roulette-chip-stack i { width:18px;height:6px;border-width:1px;margin-top:-3px; }
+.outside-palace-btn .roulette-chip-stack b { margin:0;font-size:9px;padding:1px 4px; }
+.outside-palace-btn.r-bet-red { background:linear-gradient(145deg,#dc3545,#76121d); }
+.outside-palace-btn.r-bet-black { background:linear-gradient(145deg,#35383b,#101113); }
+.outside-palace-btn.has-bet { padding-top:1.6rem;outline:2px solid #ffe18b; }
+
+/* Overall Wrapper */
+.casino-palace-wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-bottom: 70px;
+    font-family: "Cinzel", "Noto Serif SC", "Inter", Georgia, serif;
+    color: #fef08a;
+    position: relative;
+}
+
+/* Ambient Dragon Lantern Background Glow */
+.palace-ambience {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(220, 38, 38, 0.15), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.15), transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(185, 28, 28, 0.2), transparent 50%);
+    z-index: -1;
+}
+
+/* Header: Pagoda / Dragon Palace Architecture */
+.palace-header {
+    background: linear-gradient(180deg, rgba(45, 10, 14, 0.95) 0%, rgba(20, 4, 6, 0.98) 100%);
+    border: 2px solid var(--palace-gold);
+    border-radius: 24px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 215, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Pagoda Roof Accent Trim */
+.palace-header::before {
+    content: "🐉 ═══════════ 🪭 MERUŇKOVÁ ŠPLOUCHAČKA 🪭 ═══════════ 🐉";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #7f1d1d, #d97706, #7f1d1d);
+    color: #fffbeb;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-align: center;
+    padding: 3px 0;
+    font-weight: 700;
+    border-bottom: 1px solid var(--palace-gold);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.header-inner {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.palace-title-box h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, #ffd700 0%, #fb923c 50%, #fef08a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.palace-title-box p {
+    margin: 0.25rem 0 0;
+    font-size: 0.92rem;
+    color: #fde68a;
+    opacity: 0.9;
+    letter-spacing: 0.05em;
+}
+
+/* Search Bar & Secret Admin Trigger */
+.search-admin-container {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.dragon-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dragon-search-input {
+    background: rgba(15, 4, 6, 0.85);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: #fef08a;
+    padding: 0.45rem 1rem 0.45rem 2.2rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.25s ease;
+    width: 220px;
+}
+
+.dragon-search-input:focus {
+    border-color: var(--palace-gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    width: 260px;
+}
+
+.dragon-search-icon {
+    position: absolute;
+    left: 0.8rem;
+    color: var(--palace-gold);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+/* Secret Admin Panel Button */
+.btn-admin-secret {
+    background: linear-gradient(135deg, #b91c1c 0%, #d97706 100%);
+    color: #fff;
+    border: 2px solid #ffd700;
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 4px 10px rgba(0, 0, 0, 0.5);
+    animation: dragonPulse 1.4s infinite alternate;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+@keyframes dragonPulse {
+    from { transform: scale(1); box-shadow: 0 0 12px rgba(255, 215, 0, 0.4); }
+    to { transform: scale(1.06); box-shadow: 0 0 24px rgba(255, 215, 0, 0.9); }
+}
+
+/* Bankroll Display & Chips */
+.palace-bankroll {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.bankroll-vault {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(145deg, rgba(20, 4, 6, 0.95), rgba(40, 8, 12, 0.95));
+    border: 2px solid var(--palace-gold);
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 0 12px rgba(255, 215, 0, 0.15);
+}
+
+.vault-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #fb923c;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.vault-amount {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ffd700;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+/* Imperial Jade & Gold Chips */
+.chip-rack {
+    display: flex;
+    gap: 0.45rem;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.dragon-chip {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    border: 3px double #ffd700;
+    user-select: none;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.dragon-chip:hover {
+    transform: translateY(-5px) scale(1.1);
+}
+
+.dragon-chip.active {
+    transform: translateY(-5px) scale(1.18);
+    box-shadow: 0 0 20px #ffd700, 0 6px 14px rgba(0,0,0,0.6);
+    border-color: #ffffff;
+}
+
+.chip-10 { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; }
+.chip-25 { background: linear-gradient(135deg, #064e3b, #10b981); color: white; }
+.chip-50 { background: linear-gradient(135deg, #9a3412, #ea580c); color: white; }
+.chip-100 { background: linear-gradient(135deg, #7f1d1d, #ef4444); color: white; }
+.chip-500 { background: linear-gradient(135deg, #581c87, #a855f7); color: white; }
+
+/* Palace Game Tabs */
+.palace-tabs {
+    display: flex;
+    gap: 0.65rem;
+    background: linear-gradient(180deg, rgba(30, 6, 9, 0.9), rgba(15, 3, 5, 0.95));
+    border: 1px solid var(--palace-gold);
+    border-radius: 18px;
+    padding: 0.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.palace-tab-btn {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.85rem 1.2rem;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #fde68a;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.palace-tab-btn:hover {
+    background: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+}
+
+.palace-tab-btn.active {
+    background: linear-gradient(135deg, rgba(168, 28, 28, 0.5), rgba(217, 119, 6, 0.35));
+    color: #ffd700;
+    border-color: var(--palace-gold);
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.25), inset 0 0 10px rgba(255, 215, 0, 0.15);
+}
+
+/* Palace Main Game Arena */
+.palace-arena {
+    background: radial-gradient(ellipse at center, rgba(48, 8, 12, 0.92) 0%, rgba(15, 3, 5, 0.98) 100%);
+    border: 2px solid var(--palace-gold);
+    border-radius: 28px;
+    padding: 2.2rem;
+    min-height: 540px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(185, 28, 28, 0.3), inset 0 0 80px rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Decorative Dragon Corner Ornaments */
+.palace-arena::before {
+    content: "🪭";
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    font-size: 1.4rem;
+    opacity: 0.4;
+}
+
+.palace-arena::after {
+    content: "🏮";
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 1.4rem;
+    opacity: 0.4;
+}
+
+/* ==================== Playing Cards (Imperial Porcelain) ==================== */
+.cards-row {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+    flex-wrap: wrap;
+}
+
+.imperial-card {
+    width: 76px;
+    height: 112px;
+    background: linear-gradient(145deg, #fffbeb, #fef08a);
+    border-radius: 9px;
+    border: 2px solid #b45309;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(217, 119, 6, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6px 8px;
+    user-select: none;
+    position: relative;
+    animation: cardFlyIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.2s ease;
+}
+
+.imperial-card:hover {
+    transform: translateY(-8px) scale(1.05);
+}
+
+.imperial-card.red {
+    color: #b91c1c;
+}
+
+.imperial-card.black {
+    color: #0f172a;
+}
+
+.imperial-card.hidden {
+    background: repeating-linear-gradient(45deg, #7f1d1d, #7f1d1d 10px, #991b1b 10px, #991b1b 20px);
+    border: 2px solid #ffd700;
+    color: transparent;
+}
+
+.imperial-card.hidden * {
+    visibility: hidden;
+}
+
+.imperial-card.hidden::after {
+    content: "🐉";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    visibility: visible !important;
+}
+
+.card-top {
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.card-center {
+    font-size: 1.8rem;
+    line-height: 1;
+    text-align: center;
+}
+
+.card-bottom {
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1;
+    text-align: right;
+    transform: rotate(180deg);
+}
+
+@keyframes cardFlyIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.6) rotate(-15deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+}
+
+/* ==================== Blackjack Palace Layout ==================== */
+.bj-table-zone {
+    text-align: center;
+    margin: 0.8rem 0;
+}
+
+.table-label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #ffd700;
+    margin-bottom: 0.6rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.table-score {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+    color: #ffd700;
+    border: 1px solid var(--palace-gold);
+}
+
+/* Control Buttons */
+.palace-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    margin-top: 1.6rem;
+}
+
+.btn-palace {
+    padding: 0.7rem 1.6rem;
+    font-size: 1rem;
+    font-weight: 800;
+    border-radius: 999px;
+    border: 2px solid var(--palace-gold);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.btn-palace:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-palace-gold {
+    background: linear-gradient(135deg, #d97706 0%, #ffd700 100%);
+    color: #1a0407;
+}
+
+.btn-palace-gold:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+}
+
+.btn-palace-red {
+    background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%);
+    color: #fffbeb;
+}
+
+.btn-palace-red:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(220, 38, 38, 0.6);
+}
+
+.btn-palace-amber {
+    background: linear-gradient(135deg, #c2410c 0%, #f97316 100%);
+    color: #fffbeb;
+}
+
+.btn-palace-amber:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(249, 115, 22, 0.6);
+}
+
+/* Result Banners */
+.palace-result {
+    padding: 0.85rem 1.8rem;
+    border-radius: 14px;
+    margin: 1.1rem auto;
+    max-width: 500px;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    animation: palaceResultPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.palace-win {
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.35), rgba(16, 185, 129, 0.35));
+    border: 2px solid #ffd700;
+    color: #fef08a;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.palace-lose {
+    background: rgba(127, 29, 29, 0.45);
+    border: 2px solid #dc2626;
+    color: #fca5a5;
+}
+
+.palace-push {
+    background: rgba(180, 83, 9, 0.45);
+    border: 2px solid #f59e0b;
+    color: #fde68a;
+}
+
+@keyframes palaceResultPop {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==================== 3x5 Video Slot Machine (Meruňková Šplouchačka) ==================== */
+.slot-machine-palace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1060px;
+}
+
+.dragon-cabinet {
+    background: radial-gradient(ellipse at 50% 20%, #4a0d13 0%, #170406 80%, #0d0203 100%);
+    border: 5px solid #ffd700;
+    border-radius: 32px;
+    padding: 1.8rem 2.2rem;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 45px rgba(255, 215, 0, 0.4), inset 0 0 40px rgba(0, 0, 0, 0.85);
+    width: 100%;
+    position: relative;
+}
+
+/* Ornate Pagoda Roof Ornament */
+.dragon-cabinet::before {
+    content: "🐉 🪭 ═══════════ CÍSAŘSKÝ AUTOMAT MERUŇKOVÉ ŠPLOUCHAČKY ═══════════ 🪭 🐉";
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #7f1d1d, #d97706, #ffd700, #d97706, #7f1d1d);
+    color: #1a0407;
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    padding: 5px 22px;
+    border-radius: 20px;
+    border: 2px solid #ffd700;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+}
+
+.dragon-cabinet-roof {
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #ffd700;
+    margin-top: 0.5rem;
+    margin-bottom: 1.1rem;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* Free Spins Active Banner */
+.freespins-active-banner {
+    background: linear-gradient(90deg, #991b1b, #d97706, #f59e0b, #d97706, #991b1b);
+    color: #fff;
+    padding: 0.65rem 1.4rem;
+    border-radius: 14px;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    animation: freeSpinsGlow 1.2s infinite alternate;
+}
+
+@keyframes freeSpinsGlow {
+    from { box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); transform: scale(0.99); }
+    to { box-shadow: 0 0 35px rgba(255, 215, 0, 1); transform: scale(1.01); }
+}
+
+/* 3x5 Reels Matrix Stage - Visually Enlarged */
+.reels-stage-3x5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.85rem;
+    background: #080102;
+    border: 4px solid #b45309;
+    border-radius: 24px;
+    padding: 1.1rem;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.98), 0 0 20px rgba(217, 119, 6, 0.35);
+    overflow: hidden;
+    position: relative;
+}
+
+.reel-column-3x5 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Slot Cell - Visually Bigger */
+.slot-cell {
+    height: 122px;
+    background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 45%, #fde68a 85%, #fffbeb 100%);
+    border-radius: 16px;
+    border: 3px solid #d97706;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 8px 14px rgba(0, 0, 0, 0.22), inset 0 -8px 14px rgba(0, 0, 0, 0.22), 0 4px 10px rgba(0, 0, 0, 0.4);
+    user-select: none;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.slot-cell .symbol-icon {
+    font-size: 3.8rem;
+    line-height: 1;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35));
+    transition: transform 0.2s ease;
+}
+
+.slot-cell .symbol-badge {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: #7c2d12;
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Wild & Scatter Cell Styling */
+.slot-cell.wild-cell {
+    border-color: #ffd700;
+    background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 40%, #fed7aa 80%, #fff7ed 100%);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+.slot-cell.scatter-cell {
+    border-color: #f59e0b;
+    background: linear-gradient(180deg, #fefce8 0%, #fef9c3 40%, #fef08a 80%, #fefce8 100%);
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
+}
+
+/* Winning Payline Symbol Pulse */
+.slot-cell.win-cell {
+    border: 4px solid #ffd700;
+    box-shadow: 0 0 35px #ffd700, inset 0 0 20px #ffd700;
+    animation: winCellPulse 0.5s infinite alternate;
+    z-index: 5;
+}
+
+.slot-cell.win-cell .symbol-icon {
+    transform: scale(1.22);
+}
+
+@keyframes winCellPulse {
+    from { transform: scale(1); filter: brightness(1); }
+    to { transform: scale(1.08); filter: brightness(1.25); }
+}
+
+/* Spinning Column Blur */
+.reel-column-3x5.spinning .slot-cell { animation:none; }
+
+@keyframes reel3x5Roll {
+    0% { transform: translateY(0); filter: blur(4px); }
+    50% { transform: translateY(-16px); filter: blur(6px); }
+    100% { transform: translateY(0); filter: blur(4px); }
+}
+
+.palace-paytable {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 16px;
+    padding: 0.85rem 1.2rem;
+    margin-top: 1.1rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fde68a;
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.paylines-indicator {
+    font-size: 0.92rem;
+    color: #fb923c;
+    text-align: center;
+    margin-top: 0.65rem;
+    font-weight: 800;
+}
+
+/* Slots Bet & Auto Spin Controls */
+.slot-bet-controls-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: rgba(26, 7, 10, 0.95);
+    border: 2px solid var(--palace-gold);
+    border-radius: 18px;
+    padding: 1rem 1.4rem;
+    width: 100%;
+    margin-top: 0.6rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.bet-input-cluster {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bet-input-cluster label {
+    font-weight: 800;
+    color: #ffd700;
+    font-size: 0.92rem;
+    margin-right: 0.2rem;
+}
+
+.slot-custom-bet-input {
+    width: 110px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #ffd700;
+    border-radius: 10px;
+    color: #fef08a;
+    font-weight: 900;
+    font-size: 1.15rem;
+    text-align: center;
+    padding: 0.4rem 0.5rem;
+    outline: none;
+    font-family: inherit;
+}
+
+.slot-custom-bet-input:focus {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    border-color: #fff;
+}
+
+.btn-bet-step {
+    background: linear-gradient(135deg, #7f1d1d, #450a0a);
+    border: 1px solid #ffd700;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-bet-step:hover:not(:disabled) {
+    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.autospin-cluster {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+}
+
+.btn-autospin-choice {
+    background: rgba(217, 119, 6, 0.25);
+    border: 1px solid var(--palace-gold);
+    color: #fef08a;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-autospin-choice:hover:not(:disabled) {
+    background: #d97706;
+    color: #000;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+}
+
+.btn-stop-autospin {
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    color: #fff;
+    border: 2px solid #ffd700;
+    padding: 0.55rem 1.4rem;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 0.95rem;
+    cursor: pointer;
+    animation: stopAutoPulse 0.9s infinite alternate;
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+}
+
+@keyframes stopAutoPulse {
+    from { transform: scale(1); box-shadow: 0 0 10px #dc2626; }
+    to { transform: scale(1.05); box-shadow: 0 0 25px #ffd700; }
+}
+
+/* ==================== FULLSCREEN BIG WIN CELEBRATION ==================== */
+.tiered-win-modal-fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(30, 4, 8, 0.95) 0%, rgba(5, 1, 2, 0.98) 100%);
+    backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    animation: fullscreenDarken 0.4s ease forwards;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+@keyframes fullscreenDarken {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#celebrationCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100001;
+}
+
+.celebration-center-content {
+    position: relative;
+    z-index: 100002;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    max-width: 820px;
+    animation: celebrationPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes celebrationPopIn {
+    0% { transform: scale(0.4); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.celebration-dragon-crest {
+    font-size: 4rem;
+    margin-bottom: 0.4rem;
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
+    animation: crestFloat 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes crestFloat {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-12px) scale(1.1); }
+}
+
+/* Moving, Pulsing, Energetic 3D Big Win Text */
+.celebration-tier-title {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0.2rem 0;
+    line-height: 1.1;
+    animation: bigWinTitleShake 1.8s ease-in-out infinite alternate;
+    text-shadow: 0 0 35px rgba(255, 215, 0, 1), 0 5px 15px rgba(0, 0, 0, 0.9);
+}
+
+@keyframes bigWinTitleShake {
+    0% { transform: scale(1) rotate(-1.5deg); }
+    25% { transform: scale(1.06) rotate(1deg); }
+    50% { transform: scale(1.02) rotate(-1deg); }
+    75% { transform: scale(1.09) rotate(1.5deg); }
+    100% { transform: scale(1.04) rotate(0deg); }
+}
+
+/* Dynamic Ticker Rolling Count-up */
+.celebration-ticker {
+    font-size: 5.6rem;
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, #ffffff 0%, #ffd700 45%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 35px rgba(255, 215, 0, 0.9)) drop-shadow(0 8px 15px rgba(0, 0, 0, 0.9));
+    margin: 0.6rem 0;
+    letter-spacing: 0.04em;
+    animation: tickerPulse 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes tickerPulse {
+    0% { transform: scale(0.98); }
+    100% { transform: scale(1.04); }
+}
+
+.celebration-subtitle {
+    font-size: 1.35rem;
+    color: #fef08a;
+    font-weight: 700;
+    margin-bottom: 1.8rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.btn-celebration-claim {
+    background: linear-gradient(135deg, #ffd700 0%, #f59e0b 50%, #d97706 100%);
+    color: #1c0407;
+    border: 3px solid #ffffff;
+    border-radius: 50px;
+    padding: 1rem 3.2rem;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 10px 25px rgba(0, 0, 0, 0.8);
+    transition: all 0.2s ease;
+    animation: claimButtonGlow 1s infinite alternate;
+}
+
+.btn-celebration-claim:hover {
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 0 0 60px rgba(255, 215, 0, 1);
+}
+
+@keyframes claimButtonGlow {
+    from { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+    to { box-shadow: 0 0 45px rgba(255, 215, 0, 1); }
+}
+
+/* Tier Specific Colors */
+.tier-super {
+    color: #38ef7d;
+    text-shadow: 0 0 35px rgba(56, 239, 125, 0.9);
+}
+.tier-ultra {
+    color: #38bdf8;
+    text-shadow: 0 0 35px rgba(56, 189, 248, 0.9);
+}
+.tier-supersonic {
+    color: #c084fc;
+    text-shadow: 0 0 40px rgba(192, 132, 252, 0.95);
+}
+.tier-brutal {
+    color: #f87171;
+    text-shadow: 0 0 45px rgba(248, 113, 113, 1);
+}
+.tier-inhuman {
+    color: #fb923c;
+    text-shadow: 0 0 50px rgba(251, 146, 60, 1);
+}
+.tier-mastermind {
+    background: linear-gradient(135deg, #ffd700, #ff6b8b, #38ef7d, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 55px rgba(255, 215, 0, 1);
+    animation: rainbowShift 2s linear infinite, bigWinTitleShake 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes rainbowShift {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+/* ==================== European Roulette (Canvas Physics Engine) ==================== */
+.roulette-palace-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+    width: 100%;
+}
+
+/* Visually Enlarged & Luxurious Roulette Wheel */
+.wheel-canvas-box {
+    position: relative;
+    width: 430px;
+    height: 430px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#rouletteCanvas {
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.95), 0 0 50px rgba(255, 215, 0, 0.45);
+}
+
+/* Cabinet finish and motion polish */
+.dragon-cabinet { border-radius:30px; padding:clamp(1rem,3vw,2.4rem); background:linear-gradient(145deg,#3a100f 0%,#17090b 38%,#30100b 100%); box-shadow:0 28px 70px #000b,inset 0 2px 0 #ffe6a055,inset 0 0 0 7px #6a3a18; }
+.dragon-cabinet-roof { font-size:clamp(1rem,2vw,1.55rem); letter-spacing:.09em; text-shadow:0 2px 0 #551708,0 0 18px #ffbb37; }
+.reels-stage-3x5 { gap:clamp(7px,1.5vw,16px); padding:clamp(12px,2.2vw,24px); border:2px solid #a96a2a; border-radius:22px; background:radial-gradient(ellipse at 50% 0,#fff2b51c,transparent 65%),linear-gradient(135deg,#10090a,#28120d); box-shadow:inset 0 0 35px #000,0 10px 30px #0009; }
+.slot-cell { min-height:clamp(92px,12vw,150px); border-radius:16px; background:linear-gradient(145deg,#fff3d9,#c88745 12%,#54251b 14%,#241012 100%); box-shadow:inset 0 2px 3px #fff8,inset 0 -8px 16px #0009,0 5px 10px #0009; }
+.slot-cell .symbol-icon { font-size:clamp(2.7rem,6vw,5rem); filter:drop-shadow(0 6px 4px #0009); }
+.slot-cell.win-cell { animation: jackpotCell .75s ease-in-out infinite alternate; }
+@keyframes jackpotCell { to { transform:translateY(-5px) scale(1.04); box-shadow:0 0 30px #ffd700,inset 0 0 20px #fff7; } }
+.slot-bet-controls-bar { background:linear-gradient(135deg,#25100d,#0d0808); border-color:#a96a2a; }
+.palace-controls .btn-palace-gold { min-height:60px; min-width:min(360px,100%); font-size:1.12rem; letter-spacing:.08em; box-shadow:0 8px 24px #0009,0 0 24px #e9a92333; }
+.wheel-canvas-box { width:min( min(76vw,600px), 600px); height:auto; aspect-ratio:1; padding:12px; border-radius:50%; background:radial-gradient(circle,#d8a22a 0 69%,#5e300e 70% 74%,#f6d56b 75% 79%,#28110b 80%); box-shadow:0 24px 55px #000c,0 0 45px #f6c04433; }
+#rouletteCanvas { width:100%; height:100%; box-shadow:inset 0 0 14px #000,0 0 0 5px #50250d; }
+.palace-roulette-board { max-width:1180px; border-radius:18px; background:radial-gradient(ellipse at top,#164f38,#073324 65%,#071e17); border:7px double #b58a3e; box-shadow:0 22px 55px #000c,inset 0 0 30px #03150f; }
+.roulette-grid-classic .palace-cell { border-radius:5px; font-family:Inter,sans-serif; font-size:1.12rem; background-image:linear-gradient(145deg,#ffffff26,transparent 52%); }
+.roulette-grid-classic .r-red { background-color:#a71320; }.roulette-grid-classic .r-black { background-color:#171a19; }
+.outside-bets-grid { gap:5px; }.outside-palace-btn { min-height:48px; border-radius:5px; font-family:Inter,sans-serif; letter-spacing:.06em; }
+@media(max-width:760px){.palace-roulette-board{overflow-x:auto}.roulette-grid-classic{min-width:850px}.reels-stage-3x5{overflow:hidden}.slot-cell{min-height:82px}}
+
+/* Smooth reel motion and an interactive mechanical lever */
+.reel-column-3x5.spinning { perspective:700px; }
+.reel-column-3x5.spinning .slot-cell { filter:blur(1.1px) saturate(1.3); }
+.reel-column-3x5.reel-in-motion { will-change:transform; filter:drop-shadow(0 0 16px #ffcf6e77); }
+.slot-machine-face { display:grid;grid-template-columns:minmax(0,1fr) 110px;align-items:stretch;gap:clamp(12px,2vw,26px); }
+.slot-lever-mount { display:flex;justify-content:center;align-items:stretch;min-height:100%;padding:9px 0; }
+.slot-lever { position:relative;isolation:isolate;perspective:600px;transform-style:preserve-3d;width:104px;min-height:100%;border:3px solid #d5ad58;border-radius:26px;background:linear-gradient(115deg,#45170f,#1b0b0a 42%,#5a2715);box-shadow:inset 0 2px 0 #fff5,inset 0 0 0 5px #4a2818,0 12px 20px #000b;cursor:pointer;overflow:hidden; }
+.slot-lever:before { content:"";position:absolute;inset:8px;border:1px solid #d3a55c66;border-radius:19px;pointer-events:none; }
+.slot-lever:after { content:"";position:absolute;bottom:15px;left:50%;width:58px;height:15px;transform:translateX(-50%);border-radius:50%;background:linear-gradient(#ffe5a3,#a5651c 45%,#51250f);box-shadow:0 5px 7px #000b; }
+.lever-arm { position:absolute;z-index:1;top:58px;bottom:30px;left:calc(50% - 7px);width:14px;transform:rotate(0deg);transform-origin:50% 96%;border-radius:99px;background:linear-gradient(90deg,#754314,#fff0a3 34%,#d59a3f 62%,#613711);box-shadow:inset 0 0 0 1px #fff8,0 4px 7px #0009;transition:transform .2s ease; }
+.lever-knob { position:absolute;z-index:2;top:-23px;left:50%;width:46px;height:46px;transform:translateX(-50%);border:2px solid #ffdd84;border-radius:50%;background:radial-gradient(circle at 32% 25%,#fff7d8 0 7%,#e34d32 27%,#971e19 68%,#420d0d);box-shadow:inset -5px -7px 10px #450c0c,0 0 22px #f8422490,0 7px 9px #000b; }
+.lever-label { position:absolute;bottom:42px;left:0;right:0;z-index:3;color:#f9dc91;font:900 10px Inter,sans-serif;letter-spacing:.16em;text-align:center;text-shadow:0 2px 3px #000; }
+.slot-lever:hover .lever-knob { filter:brightness(1.15); }.slot-lever:disabled { opacity:.72;cursor:wait; }
+.dragon-cabinet { position:relative; isolation:isolate; transform:perspective(1500px) rotateX(1deg); }
+.cabinet-three-canvas { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; opacity:.85; }
+.reels-stage-3x5 { position:relative; transform:perspective(1200px) rotateX(2deg); box-shadow:inset 0 18px 30px #000c,inset 0 -8px 25px #d78c2c22,0 18px 24px #000b; }
+.reel-column-3x5 { transform-style:preserve-3d; border:3px solid #b78137; border-radius:18px; padding:5px; background:linear-gradient(90deg,#431c12,#f0c36b 8%,#532116 16%,#170d0b 50%,#512016 84%,#efbd60 94%,#35150e); box-shadow:inset 0 0 12px #000,0 8px 12px #0009; }
+.reels-stage-3x5 { perspective:1100px; perspective-origin:50% 45%; }
+.reel-column-3x5 { overflow:hidden; transform:rotateY(-2deg) translateZ(10px); backface-visibility:hidden; }
+.reel-column-3x5:nth-child(odd) { transform:rotateY(2deg) translateZ(10px); }
+.reel-column-3x5.spinning { box-shadow:inset 0 22px 20px #000b,inset 0 -22px 20px #000b,0 0 24px #ffd57255; }
+.reel-column-3x5.spinning .symbol-icon { animation:spinSymbol3d .42s linear infinite;transform-style:preserve-3d; }
+@keyframes spinSymbol3d { 0%{transform:translateY(-18px) rotateX(-25deg) scale(.92);filter:blur(1.5px)} 50%{transform:translateY(0) rotateX(0) scale(1.04);filter:blur(.3px)} 100%{transform:translateY(18px) rotateX(25deg) scale(.92);filter:blur(1.5px)} }
+.slot-cell { transition:filter .25s,box-shadow .25s; }
+.slot-cell .symbol-icon { transform:translateZ(18px); }
+.slot-machine-palace { transform-style:preserve-3d; }
+.slot-cell { transform:translateZ(8px); border:1px solid #ffe0a366; }
+.reel-column-3x5 { --reel-cell-height:clamp(74px,12vw,122px);--reel-cell-gap:clamp(5px,1vw,12px);position:relative;display:block;height:calc(3 * var(--reel-cell-height) + 2 * var(--reel-cell-gap) + 16px);padding:5px;overflow:hidden; }
+.reel-strip { display:flex;flex-direction:column;gap:var(--reel-cell-gap);width:100%;will-change:transform; }
+.reel-strip .slot-cell { flex:0 0 var(--reel-cell-height);height:var(--reel-cell-height);min-height:0;width:100%; }
+.reel-column-3x5.spinning .symbol-icon { animation:none; }
+.reel-column-3x5.spinning .slot-cell { filter:blur(.7px) saturate(1.12); }
+.reel-column-3x5:after { content:"";position:absolute;z-index:3;inset:5px;pointer-events:none;background:linear-gradient(to bottom,#130b0ddd,transparent 15%,transparent 85%,#130b0ddd); }
+.slot-speed-control { grid-template-columns:auto minmax(100px,190px) auto; }
+.tiered-win-modal-fullscreen { background:rgba(28,29,34,.72);backdrop-filter:grayscale(1) brightness(.22) blur(9px); }
+.tiered-win-modal-fullscreen .celebration-tier-title { color:#ffe18a;-webkit-text-fill-color:#ffe18a;-webkit-text-stroke:1px #fff2bd;transform:translateZ(34px);text-shadow:0 1px 0 #ba7b1a,0 2px 0 #9a5c12,0 3px 0 #77410c,0 4px 0 #512c09,0 9px 15px #000,0 0 34px #ffc94f;animation:winTitleFloat 1.7s ease-in-out infinite alternate; }
+.tiered-win-modal-fullscreen .celebration-ticker { color:#fff5c7;-webkit-text-fill-color:#fff5c7;-webkit-text-stroke:1px #ffe6a2;text-shadow:0 1px 0 #d88b18,0 2px 0 #a75a0d,0 3px 0 #73360a,0 8px 18px #000,0 0 35px #ffd05a;font-size:clamp(3rem,9vw,6.8rem); }
+.celebration-center-content { perspective:900px; }
+@keyframes winTitleFloat { from{transform:translateY(0) rotateX(8deg) rotateY(-4deg)}to{transform:translateY(-8px) rotateX(-4deg) rotateY(4deg)} }
+.palace-controls { display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1rem;padding:1rem;border:1px solid #d7a64d;border-radius:20px;background:linear-gradient(180deg,#4a2417,#1b0d0b 40%,#080606);box-shadow:0 14px 30px #000b,inset 0 1px 0 #fff4; }
+.slot-bet-controls-bar { margin:0;min-height:74px;border:0;background:transparent;box-shadow:none;padding:.35rem; }
+.slot-speed-control { display:grid;grid-template-columns:auto minmax(100px,190px) auto;align-items:center;gap:.7rem;padding:.55rem .8rem;border:1px solid #a97936;border-radius:13px;background:linear-gradient(145deg,#29140f,#100908);box-shadow:inset 0 3px 8px #000;color:#f6d88d;font:800 .8rem Inter,sans-serif;white-space:nowrap; }
+.slot-speed-control input { width:100%;accent-color:#efb94f;cursor:pointer; }
+.slot-speed-control output { min-width:3.2em;color:#fff1b6;font:900 .95rem Inter,sans-serif;text-align:right; }
+.bet-input-cluster { padding:.55rem .75rem;border:1px solid #bd8c43;border-radius:12px;background:linear-gradient(145deg,#29140f,#100908);box-shadow:inset 0 3px 8px #000; }
+.slot-custom-bet-input { background:transparent;border-color:#7c552b; }
+.autospin-cluster .btn-autospin-choice { border-radius:99px;box-shadow:inset 0 1px 0 #fff4,0 4px 8px #0008; }
+.palace-controls .btn-palace-gold { margin:0; }
+.slot-lever-mount { width:100%; }
+@media(max-width:850px){.palace-controls{grid-template-columns:1fr;justify-items:center}.slot-bet-controls-bar{justify-content:center}}
+@media(max-width:680px){.slot-machine-face{grid-template-columns:minmax(0,1fr) 72px;gap:8px}.slot-lever{width:72px;border-radius:18px}.lever-knob{width:34px;height:34px}.reels-stage-3x5{gap:5px;padding:7px}.slot-cell{min-height:74px!important}.slot-cell .symbol-icon{font-size:2.4rem}.slot-cell .symbol-badge{font-size:.52rem}.dragon-cabinet{padding:1.2rem .8rem}.palace-controls{grid-template-columns:1fr}.slot-bet-controls-bar{width:100%;justify-content:center}}
+
+/* Unified 3D Dragon Palace surface across every table and game */
+.casino-palace-wrap { max-width:1440px; perspective:1800px; }
+.palace-header,.palace-tabs,.palace-arena,.palace-roulette-board,.blackjack-table,.baccarat-table { border:1px solid #d8b264; background:linear-gradient(145deg,rgba(76,34,20,.97),rgba(17,10,9,.99) 48%,rgba(48,20,13,.98)); box-shadow:0 24px 55px #000b,inset 0 1px 0 #fff4,inset 0 -3px 0 #6f401b; }
+.palace-header { transform:rotateX(1deg); }
+.palace-tabs { padding:.7rem; gap:.6rem; border-radius:18px; }
+.palace-tab-btn { border:1px solid #a77a39; border-radius:12px; background:linear-gradient(155deg,#542518,#1d100d); box-shadow:0 5px 0 #160b08,0 8px 14px #0008,inset 0 1px 0 #ffe7a44d; transition:transform .2s,box-shadow .2s; }
+.palace-tab-btn:hover { transform:translateY(-3px);box-shadow:0 8px 0 #160b08,0 15px 20px #0008; }
+.palace-tab-btn.active { background:linear-gradient(145deg,#edbd5a,#a9611e); color:#281108;box-shadow:0 4px 0 #643415,inset 0 1px 0 #fff9; }
+.palace-arena { border-radius:24px; padding:clamp(1rem,2.5vw,2rem); transform-style:preserve-3d; }
+.palace-cell,.outside-palace-btn,.dragon-chip,.btn-palace { box-shadow:0 5px 0 #100a08,0 8px 12px #0008,inset 0 1px 0 #fff5; }
+.palace-cell:active,.outside-palace-btn:active,.dragon-chip:active,.btn-palace:active { transform:translateY(3px);box-shadow:0 2px 0 #100a08,inset 0 2px 4px #0008; }
+.roulette-palace-stage { perspective:1400px; }
+.wheel-canvas-box { transform:rotateX(9deg); transition:transform .5s; }
+.wheel-canvas-box:hover { transform:rotateX(3deg) scale(1.02); }
+.palace-roulette-board { transform:rotateX(2deg); }
+.tiered-win-modal-fullscreen { background:radial-gradient(ellipse at center,#54310edb,#090606fa 68%); }
+.tiered-win-modal-fullscreen .celebration-center-content { filter:drop-shadow(0 20px 32px #000); }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+.palace-roulette-board {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 980px;
+    background: linear-gradient(180deg, rgba(28, 6, 10, 0.92) 0%, rgba(12, 2, 4, 0.97) 100%);
+    padding: 1.6rem;
+    border-radius: 24px;
+    border: 3px solid var(--palace-gold);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.75), inset 0 0 25px rgba(0, 0, 0, 0.8);
+}
+
+/* Classic Casino 12x3 Grid with 0 column */
+.roulette-grid-classic {
+    display: grid;
+    grid-template-columns: 54px repeat(12, minmax(38px, 1fr)) 54px;
+    grid-template-rows: repeat(3, 66px);
+    gap: 4px;
+    position: relative;
+}
+
+.roulette-grid-classic .r-zero { grid-column: 1; grid-row: 1 / span 3; }
+.roulette-dozen { display:grid; place-items:center; border:1px solid rgba(255,215,0,.45); color:#ffe9a3; font-weight:900; background:linear-gradient(145deg,#174e3b,#092c23); border-radius:7px; }
+.roulette-chip-stack { position:absolute; z-index:9; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column-reverse; align-items:center; pointer-events:none; filter:drop-shadow(0 3px 3px #000); }
+.roulette-chip-stack i { position:relative;width:28px;height:8px;margin-top:-3px;border:2px dashed #fff4c2;border-radius:50%;background:linear-gradient(90deg,#bd7122,#ffe99b 40%,#c58028);box-shadow:0 2px 0 #75420e,0 0 8px #ffd700;transform:translateY(calc(var(--stack-level)*-3px)); }
+.roulette-chip-stack b { margin-top:2px; border-radius:99px; padding:1px 5px; background:#170b08;color:#ffe997;font:700 10px Inter,sans-serif;white-space:nowrap; }
+.palace-cell.has-bet { outline:2px solid #fff1a1; }
+
+.palace-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.15rem;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: white;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.15), 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.palace-cell:hover {
+    transform: scale(1.08);
+    z-index: 10;
+    box-shadow: 0 0 20px #ffd700;
+    border-color: #ffd700;
+}
+
+.palace-cell.r-red { background: linear-gradient(135deg, #991b1b, #dc2626); }
+.palace-cell.r-black { background: linear-gradient(135deg, #09090b, #1f2937); }
+.palace-cell.r-green { background: linear-gradient(135deg, #065f46, #10b981); }
+
+/* 0 spanning the left */
+.palace-cell.r-zero {
+    grid-row: 1 / span 3;
+    background: linear-gradient(135deg, #047857, #10b981);
+    font-size: 1.6rem;
+}
+
+/* 3D Chip Stacking inside Cells & Outside Bets */
+.chip-stack-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 8;
+}
+
+.stacked-chip-disc {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 255, 255, 0.85);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.8), inset 0 2px 3px rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    transition: transform 0.15s ease;
+}
+
+.chip-stack-badge {
+    position: absolute;
+    background: linear-gradient(135deg, #ffd700, #f59e0b);
+    color: #1a0407;
+    font-weight: 900;
+    font-size: 0.72rem;
+    padding: 1px 6px;
+    border-radius: 10px;
+    border: 1px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    z-index: 20;
+    letter-spacing: -0.02em;
+}
+
+.outside-bets-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-top: 0.6rem;
+}
+
+.outside-palace-btn {
+    padding: 0.8rem 0.4rem;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 0.92rem;
+    border: 1.5px solid var(--palace-gold);
+    background: rgba(255, 215, 0, 0.08);
+    color: #fef08a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    position: relative;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.outside-palace-btn:hover {
+    background: rgba(255, 215, 0, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.outside-palace-btn.has-bet {
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+/* Past numbers record */
+.past-numbers {
+    display: flex;
+    gap: 0.45rem;
+    align-items: center;
+    overflow-x: auto;
+    padding: 0.3rem 0;
+}
+
+.number-seal {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: white;
+    border: 1px solid #ffd700;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* ==================== Baccarat Palace ==================== */
+.baccarat-palace-table {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.baccarat-sides {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.baccarat-imperial-bets {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.1rem;
+    margin-top: 1rem;
+}
+
+.imperial-bet-box {
+    background: rgba(20, 4, 6, 0.75);
+    border: 2px dashed rgba(255, 215, 0, 0.35);
+    border-radius: 18px;
+    padding: 1.35rem 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.imperial-bet-box:hover {
+    background: rgba(255, 215, 0, 0.08);
+    border-color: #ffd700;
+    transform: translateY(-3px);
+}
+
+.imperial-bet-box.active {
+    background: linear-gradient(135deg, rgba(168, 28, 28, 0.4), rgba(217, 119, 6, 0.35));
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+}
+
+.bet-box-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ffd700;
+    margin-bottom: 0.2rem;
+}
+
+.bet-box-odds {
+    font-size: 0.8rem;
+    color: #fde68a;
+    opacity: 0.8;
+}
+
+.bet-box-chip {
+    margin-top: 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffd700;
+    text-shadow: 0 0 8px #ffd700;
+}
+
+/* ==================== Admin Secret Modal ==================== */
+.admin-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: modalFadeIn 0.25s ease;
+}
+
+.admin-palace-modal {
+    background: linear-gradient(180deg, #3b090e 0%, #150305 100%);
+    border: 3px solid #ffd700;
+    border-radius: 24px;
+    padding: 2.2rem;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 215, 0, 0.6);
+    position: relative;
+    text-align: center;
+}
+
+.admin-modal-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.admin-modal-desc {
+    font-size: 0.9rem;
+    color: #fde68a;
+    margin-bottom: 1.5rem;
+}
+
+.admin-input-group {
+    margin-bottom: 1.5rem;
+}
+
+.admin-input-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: #fb923c;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.admin-money-input {
+    width: 100%;
+    background: #0d0203;
+    border: 2px solid #d97706;
+    color: #ffd700;
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    outline: none;
+    text-align: center;
+}
+
+.admin-money-input:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 15px #ffd700;
+}
+
+.admin-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.admin-quick-btn {
+    background: rgba(255, 215, 0, 0.12);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: #fef08a;
+    padding: 0.5rem 0.3rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.admin-quick-btn:hover {
+    background: #ffd700;
+    color: #1a0407;
+}
+
+.admin-modal-actions {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+    .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .palace-bankroll {
+        justify-content: space-between;
+    }
+    .wheel-canvas-box {
+        width: 310px;
+        height: 310px;
+    }
+    #rouletteCanvas {
+        width: 300px;
+        height: 300px;
+    }
+    .roulette-grid-classic {
+        grid-template-columns: 45px repeat(12, 40px);
+        overflow-x: auto;
+        padding-bottom: 8px;
+    }
+    .slot-cell {
+        height: 94px;
+    }
+    .slot-cell .symbol-icon {
+        font-size: 2.7rem;
+    }
+    .celebration-tier-title {
+        font-size: 2.4rem;
+    }
+    .celebration-ticker {
+        font-size: 3.6rem;
+    }
+    .outside-bets-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .baccarat-sides {
+        grid-template-columns: 1fr;
+    }
+}
