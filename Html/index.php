@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <title>ROOTSINVEIN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Nastaví téma ještě před vykreslením, aby při načtení neprobliklo -->
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem("riv-theme");
+                if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                document.documentElement.dataset.theme = t;
+            } catch (e) {}
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/ind3x.css">
     <link rel="icon" type="image/png" sizes="16x16" href="../IMG/favicon-16x16.png">
@@ -16,38 +32,51 @@
 
 <div class="container py-4">
 
-    <nav class="navbar navbar-expand-sm navbar-dark glass glass-nav rounded-pill px-3 py-2 mb-4">
+    <nav class="navbar navbar-expand-sm glass glass-nav px-3 mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.html">
-                <img src="../IMG/favicon.ico" alt="ROOTSINVEIN" width="44" height="44">
+                <img src="../IMG/favicon.ico" alt="ROOTSINVEIN">
             </a>
+
+            <button class="theme-toggle order-sm-last ms-auto ms-sm-0 me-1 me-sm-0" id="themeToggle" type="button"
+                    aria-label="Přepnout tmavý režim" aria-pressed="false">
+                <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+                </svg>
+                <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+                </svg>
+            </button>
+
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar" aria-label="Menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto gap-sm-1">
-                    <li class="nav-item"><a class="nav-link active" href="javascript:void(0)">Ostrov</a></li>
-                    <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Rott</a></li>
-                    <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Link</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="javascript:void(0)">Main</a></li>
+                    <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Učení</a></li>
+                    <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Výpisky</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Obsah -->
     <main class="row g-4">
         <section class="col-lg-8">
-            <article class="glass glass-card hero rounded-5 p-4 p-md-5 h-100">
-                <h1 class="display-4 fw-bold">Vsechno je jedno</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu elit porta, pharetra lacus non, condimentum risus. Sed feugiat risus non tempus vulputate. Curabitur porttitor ligula quis tellus porttitor, at dapibus libero molestie. Duis ut risus ut mi volutpat pretium vitae eu turpis. Morbi congue vehicula condimentum. Curabitur euismod mi ornare arcu pellentesque tempor. Suspendisse aliquam eu velit et imperdiet. In hendrerit libero ac quam sodales semper. Aliquam erat volutpat. Nullam iaculis odio sit amet ante hendrerit, sit amet porta magna faucibus. Vestibulum cursus massa sit amet nisi tincidunt, quis pellentesque dolor tincidunt. Mauris vestibulum vel turpis non tincidunt. Cras laoreet, libero a tempus placerat, felis lectus tempus ex, vel laoreet lacus tortor in libero. Mauris id turpis dapibus, laoreet eros at, ultricies dui. Morbi urna urna, venenatis vel porttitor vitae, pellentesque sit amet lacus. Phasellus quis orci id sapien efficitur scelerisque.</p>
-                <a href="javascript:void(0)" class="btn btn-glass rounded-pill px-4 mt-2">Zjistit více</a>
+            <article class="glass glass-card hero p-4 p-md-5 h-100">
+                <h1>Testuju</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu elit porta, pharetra lacus non, condimentum risus. Sed feugiat risus non tempus vulputate. Curabitur porttitor ligula quis tellus porttitor, at dapibus libero molestie.</p>
+                <p>Duis ut risus ut mi volutpat pretium vitae eu turpis. Morbi congue vehicula condimentum. Curabitur euismod mi ornare arcu pellentesque tempor. Suspendisse aliquam eu velit et imperdiet.</p>
+                <a href="javascript:void(0)" class="btn btn-glass rounded-pill mt-2">Zjistit více</a>
             </article>
         </section>
 
         <aside class="col-lg-4">
-            <article class="glass glass-card rounded-5 p-4 p-md-5 h-100">
-                <h2 class="fw-bold">Bleh</h2>
-                <p>Donec vitae vestibulum dolor, in consequat eros. Quisque eu fringilla eros. Suspendisse porta ligula risus. Duis ipsum quam, facilisis vitae lectus eget, vulputate suscipit nunc. Aenean scelerisque, risus eget cursus aliquet, metus dui aliquet nibh, non elementum nisi felis a lectus. In eget nulla non dolor facilisis viverra id eu dolor. Donec rutrum dui tellus, nec fermentum leo rutrum non. Integer ac libero nec risus aliquet dignissim. Maecenas interdum dui a ante varius aliquet.</p>
+            <article class="glass glass-card p-4 p-md-5 h-100">
+                <h2>Sebezastřelení Se</h2>
+                <p>Donec vitae vestibulum dolor, in consequat eros. Quisque eu fringilla eros. Suspendisse porta ligula risus. Duis ipsum quam, facilisis vitae lectus eget, vulputate suscipit nunc. Aenean scelerisque, risus eget cursus aliquet, metus dui aliquet nibh.</p>
             </article>
         </aside>
     </main>
@@ -56,3 +85,4 @@
 
 </body>
 </html>
+

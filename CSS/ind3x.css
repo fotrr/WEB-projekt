@@ -1,31 +1,67 @@
-/* ROOTSINVEIN – podmořský "glass" vzhled */
+/* ROOTSINVEIN */
 
 :root {
-    --deep-1: #0a4d6e;
-    --deep-2: #073552;
-    --deep-3: #031826;
-    --glass-bg: rgba(255, 255, 255, 0.08);
-    --glass-bg-hover: rgba(255, 255, 255, 0.13);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --text: #e9f7fb;
-    --accent: #5fe0d0;
+    color-scheme: light;
+
+    --bg-top: #f1f9fc;
+    --bg-mid: #d6edf4;
+    --bg-bot: #b4dbe8;
+    --ink: #0b2a36;
+    --ink-soft: rgba(11, 42, 54, 0.68);
+    --glass: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.75);
+    --glass-inset: rgba(255, 255, 255, 0);
+    --shadow: 0 1px 2px rgba(11, 42, 54, 0.05), 0 16px 48px rgba(11, 42, 54, 0.08);
+    --glow: rgba(255, 255, 255, 0.9);
+    --nav-hover: rgba(11, 42, 54, 0.06);
+    --nav-active: rgba(11, 42, 54, 0.08);
+    --btn-bg: #0b2a36;
+    --btn-ink: #ffffff;
+    --btn-hover: #1b4456;
+    --focus: #3a9bb8;
+    --toggler-filter: none;
+    --radius: 24px;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg-top: #0b3a55;
+    --bg-mid: #06263c;
+    --bg-bot: #020f1a;
+    --ink: #eaf6fa;
+    --ink-soft: rgba(234, 246, 250, 0.68);
+    --glass: rgba(255, 255, 255, 0.07);
+    --glass-border: rgba(255, 255, 255, 0.13);
+    --glass-inset: rgba(255, 255, 255, 0.07);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 48px rgba(0, 0, 0, 0.35);
+    --glow: rgba(110, 200, 255, 0.2);
+    --nav-hover: rgba(255, 255, 255, 0.08);
+    --nav-active: rgba(255, 255, 255, 0.13);
+    --btn-bg: #eaf6fa;
+    --btn-ink: #06263c;
+    --btn-hover: #ffffff;
+    --focus: #6cc8e6;
+    --toggler-filter: invert(1);
 }
 
 html {
     min-height: 100%;
-    background: linear-gradient(180deg, var(--deep-1) 0%, var(--deep-2) 45%, var(--deep-3) 100%) fixed;
+    background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 55%, var(--bg-bot) 100%) fixed;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
     min-height: 100vh;
-    color: var(--text);
-    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-    line-height: 1.7;
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
     background: transparent;
     padding-bottom: 160px; /* místo nad mořským dnem */
 }
 
-/* Plátno s rybami a bublinami */
+/* Plátno s mořem */
 #ocean {
     position: fixed;
     inset: 0;
@@ -35,105 +71,146 @@ body {
     pointer-events: none;
 }
 
-/* Světelné paprsky shora */
+/* Jemné světlo shora */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -2;
-    background:
-            radial-gradient(ellipse 60% 40% at 50% -5%, rgba(120, 230, 255, 0.28), transparent 70%),
-            repeating-linear-gradient(105deg, transparent 0 90px, rgba(255, 255, 255, 0.03) 90px 150px);
+    background: radial-gradient(ellipse 70% 45% at 50% -10%, var(--glow), transparent 70%);
     pointer-events: none;
 }
 
-/* Skleněný panel (průhledný, zaoblený) */
+/* Sklo */
 .glass {
-    background: var(--glass-bg);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    backdrop-filter: blur(14px) saturate(140%);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid var(--glass-border);
-    box-shadow:
-            0 10px 32px rgba(0, 0, 0, 0.25),
-            inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    box-shadow: var(--shadow), inset 0 1px 0 var(--glass-inset);
 }
 
 .glass-card {
-    transition: background 0.3s ease, transform 0.3s ease;
+    border-radius: var(--radius);
+    opacity: 0;
+    transform: translateY(12px);
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.glass-card:hover {
-    background: var(--glass-bg-hover);
-    animation-play-state: paused;
-}
+aside .glass-card { animation-delay: 0.12s; }
 
-/* Plovoucí panely – jemně se vznášejí jako ve vodě */
-@keyframes drift {
-    0%, 100% { translate: 0 0;     rotate: 0deg; }
-    50%      { translate: 0 -12px; rotate: 0.4deg; }
+@keyframes rise {
+    to { opacity: 1; transform: none; }
 }
-@keyframes drift-soft {
-    0%, 100% { translate: 0 0; }
-    50%      { translate: 0 -6px; }
-}
-.glass-card { animation: drift 7s ease-in-out infinite; }
-aside .glass-card { animation-duration: 9s; animation-delay: -3s; }
-.glass-nav { animation: drift-soft 8s ease-in-out infinite; }
 
 /* Navigace */
+.glass-nav {
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem !important;
+}
+.glass-nav .navbar-brand { padding: 0; }
 .glass-nav .navbar-brand img {
     border-radius: 50%;
     object-fit: cover;
+    width: 32px;
+    height: 32px;
 }
 .glass-nav .nav-link {
-    color: rgba(233, 247, 251, 0.8);
-    border-radius: 50rem;
-    padding: 0.4rem 1.1rem;
-    transition: background 0.2s ease, color 0.2s ease;
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    border-radius: 999px;
+    padding: 0.35rem 0.95rem;
+    transition: background 0.25s ease, color 0.25s ease;
 }
 .glass-nav .nav-link:hover,
 .glass-nav .nav-link:focus-visible {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.14);
+    color: var(--ink);
+    background: var(--nav-hover);
 }
 .glass-nav .nav-link.active {
-    color: #04222f;
-    background: var(--accent);
+    color: var(--ink);
+    background: var(--nav-active);
+}
+.glass-nav .navbar-toggler-icon {
+    filter: var(--toggler-filter);
 }
 
-/* Nadpisy a text */
-h1, h2 { letter-spacing: -0.01em; }
+/* Přepínač světlý / tmavý */
+.theme-toggle {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink-soft);
+    display: inline-grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.theme-toggle:hover {
+    color: var(--ink);
+    background: var(--nav-hover);
+}
+.theme-toggle:active { transform: scale(0.92); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .i-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
 
+/* Typografie */
+h1, h2 {
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    color: var(--ink);
+}
 .hero h1 {
-    background: linear-gradient(90deg, #fff, var(--accent));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: clamp(2.5rem, 5.5vw, 4rem);
+    margin-bottom: 1.25rem;
+}
+h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+p {
+    color: var(--ink-soft);
+    max-width: 62ch;
 }
 
 /* Tlačítko */
 .btn-glass {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid var(--glass-border);
-    transition: background 0.2s ease, transform 0.2s ease;
+    color: var(--btn-ink);
+    background: var(--btn-bg);
+    border: 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    padding: 0.6rem 1.35rem;
+    transition: background 0.25s ease, transform 0.25s ease;
 }
 .btn-glass:hover {
-    color: #04222f;
-    background: var(--accent);
-    transform: translateY(-1px);
+    color: var(--btn-ink);
+    background: var(--btn-hover);
 }
+.btn-glass:active { transform: scale(0.98); }
 
 a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--focus);
     outline-offset: 3px;
 }
 
 /* Menu na mobilu */
 @media (max-width: 575.98px) {
-    .glass-nav { border-radius: 2rem !important; }
+    .glass-nav { border-radius: 24px !important; }
 }
 
-/* Když prohlížeč nepodporuje rozmazání, panely budou o trochu tmavší */
+@media (prefers-reduced-motion: reduce) {
+    .glass-card { animation: none; opacity: 1; transform: none; }
+}
+
+/* Když prohlížeč nepodporuje rozmazání */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .glass { background: rgba(4, 30, 48, 0.75); }
+    .glass { background: rgba(255, 255, 255, 0.85); }
+    :root[data-theme="dark"] .glass { background: rgba(6, 38, 60, 0.85); }
 }
