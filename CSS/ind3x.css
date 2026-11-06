@@ -95,6 +95,15 @@ body::before {
     opacity: 0;
     transform: translateY(12px);
     animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow), 0 0 24px var(--glow), inset 0 1px 0 var(--glass-inset);
+    border-color: rgba(255, 255, 255, 0.85);
+}
+:root[data-theme="dark"] .glass-card:hover {
+    border-color: rgba(140, 220, 255, 0.3);
 }
 aside .glass-card { animation-delay: 0.12s; }
 

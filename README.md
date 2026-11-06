@@ -1,2 +1,2 @@
 # WEB-projekt
-html/BS5/PHP/CSS
+HTML / Bootstrap 5 / CSS / TypeScript

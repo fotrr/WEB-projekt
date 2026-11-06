@@ -55,6 +55,8 @@
         rays:   "255,255,255", rayA: 0.32,
         dust:   "255,255,255", dustA: 0.75,
         bubble: ["rgba(255,255,255,0.75)", "rgba(160,215,235,0.15)", "rgba(255,255,255,0.9)"],
+        caustic: "255,255,235", causticA: 0.42,
+        causticPool: "255,248,215", poolA: 0.32,
         fishA:  0.8
     };
     const DARK = {
@@ -74,6 +76,8 @@
         rays:   "140,220,255", rayA: 0.15,
         dust:   "190,235,255", dustA: 0.55,
         bubble: ["rgba(200,240,255,0.6)", "rgba(120,200,235,0.08)", "rgba(200,240,255,0.5)"],
+        caustic: "130,230,255", causticA: 0.32,
+        causticPool: "80,210,255", poolA: 0.26,
         fishA:  0.9
     };
     const pal = () => (isDark() ? DARK : LIGHT);
@@ -100,6 +104,7 @@
     let W = 0, H = 0, dpr = 1, seaH = 100;
     let fish = [], bubbles = [], weeds = [], blades = [], vents = [];
     let crabs = [], jellies = [], dust = [];
+    let causticCells = [], currentRayHits = [];
     let decor = null, decorFar = null;
     const mouse = { x: -9999, y: -9999 };
 
@@ -324,33 +329,216 @@
 
     /* ----------------------- Světelné paprsky a hladina ----------------------- */
     function drawRays(t) {
-        const p = pal(), n = W < 700 ? 3 : 6;
+        const p = pal(), n = W < 700 ? 4 : 7;
+        currentRayHits = [];
+
         for (let i = 0; i < n; i++) {
             const k = n > 1 ? i / (n - 1) : 0.5;
-            const x0 = W * (0.05 + 0.9 * k) + Math.sin(t / 7000 + i * 1.7) * 60;
-            const wTop = 30 + 20 * Math.sin(t / 5000 + i);
-            const wBot = 170 + 60 * Math.sin(t / 6000 + i * 2);
-            const slant = H * 0.25, yEnd = H * 0.9;
-            const a = p.rayA * (0.65 + 0.35 * Math.sin(t / 4200 + i * 2.3));
-            const g = ctx.createLinearGradient(x0, 0, x0 + slant, yEnd);
+            const sway = Math.sin(t / 5500 + i * 1.6) * (W < 700 ? 32 : 65);
+            const x0 = W * (0.04 + 0.92 * k) + sway;
+            const wTop = 26 + 18 * Math.sin(t / 4200 + i * 1.1);
+            const wBot = 160 + 55 * Math.sin(t / 5200 + i * 1.8);
+            const slant = H * (0.2 + 0.08 * Math.sin(t / 7000 + i * 1.3));
+            const xEnd = x0 + slant;
+            const yBed = duneY(xEnd) + 14;
+
+            const a = p.rayA * (0.7 + 0.3 * Math.sin(t / 3800 + i * 2.1));
+            if (a <= 0) continue;
+
+            // Vnější jemný kužel světelného paprsku
+            const g = ctx.createLinearGradient(x0, 0, xEnd, yBed);
             g.addColorStop(0, `rgba(${p.rays},${a})`);
+            g.addColorStop(0.65, `rgba(${p.rays},${a * 0.7})`);
+            g.addColorStop(0.95, `rgba(${p.rays},${a * 0.45})`);
             g.addColorStop(1, `rgba(${p.rays},0)`);
+
             ctx.fillStyle = g;
             ctx.beginPath();
-            ctx.moveTo(x0 - wTop / 2, -10); ctx.lineTo(x0 + wTop / 2, -10);
-            ctx.lineTo(x0 + slant + wBot / 2, yEnd); ctx.lineTo(x0 + slant - wBot / 2, yEnd);
-            ctx.closePath(); ctx.fill();
+            ctx.moveTo(x0 - wTop / 2, -10);
+            ctx.lineTo(x0 + wTop / 2, -10);
+            ctx.lineTo(xEnd + wBot / 2, yBed);
+            ctx.lineTo(xEnd - wBot / 2, yBed);
+            ctx.closePath();
+            ctx.fill();
+
+            // Vnitřní jasnější jádro paprsku
+            const coreA = a * 0.55;
+            const gCore = ctx.createLinearGradient(x0, 0, xEnd, yBed);
+            gCore.addColorStop(0, `rgba(${p.rays},${coreA})`);
+            gCore.addColorStop(0.7, `rgba(${p.rays},${coreA * 0.5})`);
+            gCore.addColorStop(1, `rgba(${p.rays},0)`);
+            ctx.fillStyle = gCore;
+            ctx.beginPath();
+            ctx.moveTo(x0 - wTop * 0.22, -10);
+            ctx.lineTo(x0 + wTop * 0.22, -10);
+            ctx.lineTo(xEnd + wBot * 0.22, yBed);
+            ctx.lineTo(xEnd - wBot * 0.22, yBed);
+            ctx.closePath();
+            ctx.fill();
+
+            // Záznam dopadu na mořské dno pro osvětlení dna
+            currentRayHits.push({ x: xEnd, y: yBed - 8, width: wBot, alpha: a });
         }
-        // vlnění hladiny nahoře
-        ctx.strokeStyle = `rgba(${p.rays},0.2)`; ctx.lineWidth = 1.2;
+
+        // Vlnění hladiny nahoře
+        ctx.strokeStyle = `rgba(${p.rays},0.22)`;
+        ctx.lineWidth = 1.3;
         for (let l = 0; l < 2; l++) {
             ctx.beginPath();
             for (let x = 0; x <= W + 12; x += 12) {
                 const y = 8 + l * 9 + Math.sin(x / 70 + t / 1400 + l * 2) * 3;
-                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
             }
             ctx.stroke();
         }
+    }
+
+    /* ---------------- Osvětlení mořského dna a kaustické odlesky ---------------- */
+    function buildCaustics() {
+        const count = Math.max(9, Math.round(W / 85));
+        causticCells = Array.from({ length: count }, (_, i) => ({
+            xRatio: (i + rand(0.1, 0.9)) / count,
+            r: rand(16, 36),
+            offsetY: rand(8, Math.max(14, seaH * 0.55)),
+            speed: rand(0.0007, 0.0015),
+            ph: rand(0, 6.3),
+            phX: rand(0, 6.3),
+            drift: rand(12, 28)
+        }));
+    }
+
+    function drawSeabedLighting(t, hits) {
+        if (!hits || !hits.length) return;
+        const p = pal();
+        ctx.save();
+        ctx.globalCompositeOperation = isDark() ? "screen" : "lighter";
+
+        for (const h of hits) {
+            const rx = h.width * 0.52;
+            const ry = Math.min(seaH * 0.45, h.width * 0.18);
+            const pulse = 0.8 + 0.2 * Math.sin(t / 1200 + h.x * 0.05);
+            const poolA = p.poolA * h.alpha * pulse * 2.2;
+            if (poolA <= 0.005) continue;
+
+            const g = ctx.createRadialGradient(h.x, h.y, 4, h.x, h.y, rx);
+            g.addColorStop(0, `rgba(${p.causticPool},${poolA * 1.5})`);
+            g.addColorStop(0.45, `rgba(${p.causticPool},${poolA * 0.7})`);
+            g.addColorStop(1, `rgba(${p.causticPool},0)`);
+
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.ellipse(h.x, h.y, rx, ry, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
+    }
+
+    function drawCaustics(t) {
+        const p = pal();
+        ctx.save();
+
+        // Oříznutí na oblast dna a písečných dun
+        ctx.beginPath();
+        ctx.moveTo(-30, H + 30);
+        for (let x = -30; x <= W + 30; x += 16) {
+            ctx.lineTo(x, duneY(x) - 3);
+        }
+        ctx.lineTo(W + 30, H + 30);
+        ctx.closePath();
+        ctx.clip();
+
+        ctx.globalCompositeOperation = isDark() ? "screen" : "lighter";
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        // 1. Dvě protínající se sady vlnících se kaustických pásů (vytváří diamantovou vodní síť)
+        const strandCount = Math.max(3, Math.round(seaH / 24));
+        const dt = t * 0.001;
+
+        // Vrstva A - vlnící se vpravo dolů
+        for (let s = 0; s < strandCount; s++) {
+            const yBase = H - seaH * (0.78 - s * 0.24);
+            const phase = s * 1.9 + dt * 1.2;
+            const a = p.causticA * (0.42 + 0.22 * Math.sin(phase * 0.8));
+            if (a <= 0.01) continue;
+
+            ctx.strokeStyle = `rgba(${p.caustic},${a})`;
+            ctx.lineWidth = 1.4 + 0.8 * Math.sin(phase);
+
+            ctx.beginPath();
+            let started = false;
+            for (let x = -30; x <= W + 30; x += 20) {
+                const dy = duneY(x);
+                const y = Math.max(dy + 3, yBase + Math.sin(x * 0.024 + phase) * 11 + Math.sin(x * 0.052 - dt * 1.7 + s) * 7);
+                if (!started) { ctx.moveTo(x, y); started = true; }
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        // Vrstva B - vlnící se v protisměru (vytvoří křivkové uzly kaustiky)
+        for (let s = 0; s < strandCount; s++) {
+            const yBase = H - seaH * (0.72 - s * 0.24);
+            const phase = s * 2.3 - dt * 1.4;
+            const a = p.causticA * (0.38 + 0.2 * Math.cos(phase * 0.7));
+            if (a <= 0.01) continue;
+
+            ctx.strokeStyle = `rgba(${p.caustic},${a})`;
+            ctx.lineWidth = 1.3 + 0.7 * Math.cos(phase);
+
+            ctx.beginPath();
+            let started = false;
+            for (let x = -30; x <= W + 30; x += 20) {
+                const dy = duneY(x);
+                const y = Math.max(dy + 4, yBase + Math.sin(x * 0.028 - phase) * 13 + Math.cos(x * 0.056 + dt * 1.5 + s * 1.3) * 6);
+                if (!started) { ctx.moveTo(x, y); started = true; }
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        // 2. Organická kaustická buněčná oka tančící po dně
+        for (const cell of causticCells) {
+            const cx = cell.xRatio * W + Math.sin(dt * cell.speed * 1000 + cell.phX) * cell.drift;
+            const dy = duneY(cx);
+            const cy = dy + cell.offsetY + Math.sin(dt * cell.speed * 1200 + cell.ph) * 5;
+            if (cy > H + 10) continue;
+
+            const pulse = 1 + 0.2 * Math.sin(dt * 2.4 + cell.ph);
+            const cr = cell.r * pulse;
+            const pts = 8;
+            const cellA = p.causticA * (0.35 + 0.22 * Math.sin(dt * 1.6 + cell.ph));
+            if (cellA <= 0.01) continue;
+
+            ctx.strokeStyle = `rgba(${p.caustic},${cellA})`;
+            ctx.lineWidth = 1.5;
+            ctx.fillStyle = `rgba(${p.caustic},${cellA * 0.18})`;
+
+            ctx.beginPath();
+            for (let j = 0; j < pts; j++) {
+                const ang = (j / pts) * Math.PI * 2;
+                const deform = 1 + 0.28 * Math.sin(ang * 2 + dt * 2.1 + cell.ph) + 0.16 * Math.cos(ang * 3 - dt * 1.7);
+                const px = cx + Math.cos(ang) * (cr * deform);
+                const py = cy + Math.sin(ang) * (cr * 0.44 * deform);
+                if (j === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.stroke();
+            ctx.fill();
+
+            // Třpytivý odlesk v jádru buňky při průchodu světla
+            const shimmer = Math.sin(dt * 2.2 + cell.ph);
+            if (shimmer > 0.5) {
+                ctx.fillStyle = `rgba(${p.caustic},${cellA * 0.8 * (shimmer - 0.5) * 2})`;
+                ctx.beginPath();
+                ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        ctx.restore();
     }
 
     function drawDust(t, animate) {
@@ -670,7 +858,7 @@
         seaH = Math.min(130, Math.max(70, H * 0.13));
         canvas.width = W * dpr; canvas.height = H * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        buildDecor(); buildPlants(); buildDust();
+        buildDecor(); buildPlants(); buildDust(); buildCaustics();
 
         if (!fish.length) buildFish();
         else fish.forEach(f => { f.baseY = Math.min(f.baseY, swimMax()); });
@@ -702,6 +890,8 @@
         bubbles.forEach(b => b.draw());
         fish.forEach(f => f.draw(t));
         ctx.drawImage(decor, 0, 0, W, H);
+        drawSeabedLighting(t, currentRayHits);
+        drawCaustics(t);
         crabs.forEach(c => c.draw(t));
         weeds.forEach(w => drawWeed(w, t));
         blades.forEach(b => drawBlade(b, t));
