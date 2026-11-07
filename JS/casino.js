@@ -244,6 +244,7 @@ class MerunkovaSplouchacka {
         this.bjBet = 0;
         this.bjStatus = 'idle';
         this.bjResultMsg = '';
+        this.customBjBet = 25;
 
         // 3x5 Video Slot State
         this.slotSymbols = [
@@ -281,6 +282,7 @@ class MerunkovaSplouchacka {
         this.bacStatus = 'idle';
         this.bacResultMsg = '';
         this.bacHistory = [];
+        this.customBacBet = 25;
 
         // Roulette State
         this.rBets = [];
@@ -288,6 +290,8 @@ class MerunkovaSplouchacka {
         this.rWheelAngle = 0;
         this.rResultMsg = '';
         this.rHistory = [];
+        this.customRBet = 25;
+        this.rParticles = [];
 
         this.rouletteWheelNumbers = [
             0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10,
@@ -351,7 +355,6 @@ class MerunkovaSplouchacka {
         if (!root) return;
 
         root.innerHTML = `
-            <div class="palace-ambience"></div>
             <div class="casino-palace-wrap">
 
                 <!-- Dragon Palace Imperial Header -->
@@ -783,8 +786,11 @@ class MerunkovaSplouchacka {
 
             <div class="palace-controls">
                 ${this.bjStatus === 'idle' || this.bjStatus === 'resolved' ? `
+                    <div class="slot-bet-controls-bar" style="margin-bottom:12px;">
+                        <div class="bet-input-cluster"><label for="bjCustomBet">Sázka</label><input class="slot-custom-bet-input" id="bjCustomBet" type="number" min="1" step="1" value="${this.customBjBet}"></div>
+                    </div>
                     <button class="btn-palace btn-palace-gold" id="btnBjDeal">
-                        Rozdat Karty ($${this.selectedChip})
+                        Rozdat Karty ($${this.customBjBet || this.selectedChip})
                     </button>
                 ` : `
                     <button class="btn-palace btn-palace-gold" id="btnBjHit">Hit (Karta)</button>
@@ -798,13 +804,14 @@ class MerunkovaSplouchacka {
     }
 
     bjDeal() {
-        if (this.balance < this.selectedChip) {
+        const bet = Math.max(1, Math.floor(Number(this.customBjBet) || this.selectedChip));
+        if (this.balance < bet) {
             alert('Nedostatek financí! Použijte tajný kód ELpaso v hledáčku pro doplnění peněz.');
             return;
         }
 
         SFX.chip();
-        this.bjBet = this.selectedChip;
+        this.bjBet = bet;
         this.setBalance(this.balance - this.bjBet);
 
         this.bjDeck = createDeck();
@@ -975,8 +982,11 @@ class MerunkovaSplouchacka {
                 </div>
 
                 <div class="palace-controls">
+                    <div class="slot-bet-controls-bar" style="margin-bottom:12px;">
+                        <div class="bet-input-cluster"><label for="bacCustomBet">Sázka</label><input class="slot-custom-bet-input" id="bacCustomBet" type="number" min="1" step="1" value="${this.customBacBet}"></div>
+                    </div>
                     <button class="btn-palace btn-palace-gold" id="btnBacDeal" ${!this.bacSelectedBet ? 'disabled' : ''}>
-                        Rozdat Baccarat
+                        Rozdat Baccarat ($${this.customBacBet || this.selectedChip})
                     </button>
                 </div>
             </div>
@@ -986,7 +996,7 @@ class MerunkovaSplouchacka {
     selectBaccaratBet(type) {
         SFX.chip();
         this.bacSelectedBet = type;
-        this.bacBetAmount = this.selectedChip;
+        this.bacBetAmount = Math.max(1, Math.floor(Number(this.customBacBet) || this.selectedChip));
         this.renderArena();
     }
 
@@ -1107,6 +1117,9 @@ class MerunkovaSplouchacka {
                 </div>
 
                 <div class="palace-controls">
+                    <div class="slot-bet-controls-bar" style="margin-bottom:12px;">
+                        <div class="bet-input-cluster"><label for="rCustomBet">Sázka na klik</label><input class="slot-custom-bet-input" id="rCustomBet" type="number" min="1" step="1" value="${this.customRBet}"></div>
+                    </div>
                     <button class="btn-palace btn-palace-red" id="btnClearRoulette" ${this.rBets.length === 0 || this.rSpinning ? 'disabled' : ''}>
                         Smazat Sázky
                     </button>
@@ -1118,7 +1131,50 @@ class MerunkovaSplouchacka {
         `;
     }
 
-    drawRouletteCanvas(angleRad, ballAngleRad = null) {
+    // Částice pro efekty při výhře
+    spawnWinParticles(cx, cy, count, colors) {
+        for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 1 + Math.random() * 4;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            this.rParticles.push({
+                x: cx, y: cy,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                life: 1,
+                decay: 0.008 + Math.random() * 0.015,
+                size: 2 + Math.random() * 4,
+                color
+            });
+        }
+    }
+
+    updateParticles() {
+        for (let i = this.rParticles.length - 1; i >= 0; i--) {
+            const p = this.rParticles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.05; // gravitace
+            p.life -= p.decay;
+            if (p.life <= 0) this.rParticles.splice(i, 1);
+        }
+    }
+
+    drawParticles(ctx) {
+        for (const p of this.rParticles) {
+            ctx.globalAlpha = p.life;
+            ctx.fillStyle = p.color;
+            ctx.shadowColor = p.color;
+            ctx.shadowBlur = 6;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+    }
+
+    drawRouletteCanvas(angleRad, ballAngleRad = null, winNumber = -1, winFlash = 0) {
         const cvs = document.getElementById('rouletteCanvas');
         if (!cvs) return;
         const ctx = cvs.getContext('2d');
@@ -1132,6 +1188,15 @@ class MerunkovaSplouchacka {
 
         ctx.clearRect(0, 0, W, H);
 
+        // Pozadí s glow efektem při výhře
+        if (winFlash > 0) {
+            const glowGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.2);
+            glowGrad.addColorStop(0, `rgba(255, 215, 0, ${winFlash * 0.3})`);
+            glowGrad.addColorStop(1, 'rgba(255, 215, 0, 0)');
+            ctx.fillStyle = glowGrad;
+            ctx.fillRect(0, 0, W, H);
+        }
+
         ctx.save();
         const rimGrad = ctx.createRadialGradient(cx, cy, R * 0.85, cx, cy, R);
         rimGrad.addColorStop(0, '#581c87');
@@ -1142,6 +1207,11 @@ class MerunkovaSplouchacka {
         ctx.beginPath();
         ctx.arc(cx, cy, R, 0, Math.PI * 2);
         ctx.fill();
+
+        // Ohraničení kolečka
+        ctx.strokeStyle = '#ffd700';
+        ctx.lineWidth = 3;
+        ctx.stroke();
 
         const totalSlices = this.rouletteWheelNumbers.length;
         const sliceAngle = (Math.PI * 2) / totalSlices;
@@ -1167,18 +1237,48 @@ class MerunkovaSplouchacka {
                 ctx.fillStyle = '#18181b';
             }
             ctx.fill();
+
+            // Zvýraznit vyhrávající číslo
+            if (winNumber >= 0 && num === winNumber && winFlash > 0) {
+                ctx.fillStyle = `rgba(255, 215, 0, ${winFlash * 0.5})`;
+                ctx.fill();
+            }
+
             ctx.strokeStyle = '#ffd700';
             ctx.lineWidth = 0.8;
             ctx.stroke();
 
+            // Čísla s lepým stínem
             ctx.save();
             ctx.rotate(startA + sliceAngle / 2);
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 9px sans-serif';
+            ctx.shadowColor = 'rgba(0,0,0,0.8)';
+            ctx.shadowBlur = 2;
+            ctx.font = 'bold 10px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(String(num), R * 0.72, 0);
+            ctx.shadowBlur = 0;
             ctx.restore();
+        }
+
+        // Vnitřní prsten s detaily
+        const innerRingR = R * 0.55;
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(0, 0, innerRingR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Dekorativní tečky na vnitřním prstenci
+        for (let i = 0; i < 36; i++) {
+            const a = (i / 36) * Math.PI * 2;
+            const dx = Math.cos(a) * innerRingR;
+            const dy = Math.sin(a) * innerRingR;
+            ctx.fillStyle = 'rgba(255, 215, 0, 0.4)';
+            ctx.beginPath();
+            ctx.arc(dx, dy, 1.5, 0, Math.PI * 2);
+            ctx.fill();
         }
 
         const hubGrad = ctx.createRadialGradient(0, 0, 4, 0, 0, R * 0.45);
@@ -1193,16 +1293,27 @@ class MerunkovaSplouchacka {
         ctx.lineWidth = 2;
         ctx.stroke();
 
+        // Drak ve středu s pulzací
+        const pulseScale = 1 + Math.sin(Date.now() / 300) * 0.05;
+        ctx.save();
+        ctx.scale(pulseScale, pulseScale);
         ctx.fillStyle = '#ffd700';
         ctx.font = '22px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('🐉', 0, 0);
+        ctx.restore();
 
         ctx.restore();
 
-        // Needle
+        // Needle s glow efektem
         ctx.save();
+        const needleGlow = ctx.createRadialGradient(cx, 14, 0, cx, 14, 15);
+        needleGlow.addColorStop(0, 'rgba(255, 215, 0, 0.6)');
+        needleGlow.addColorStop(1, 'rgba(255, 215, 0, 0)');
+        ctx.fillStyle = needleGlow;
+        ctx.fillRect(cx - 15, 0, 30, 28);
+
         ctx.fillStyle = '#ffd700';
         ctx.strokeStyle = '#7f1d1d';
         ctx.lineWidth = 1.5;
@@ -1213,23 +1324,46 @@ class MerunkovaSplouchacka {
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
+        ctx.restore();
 
-        // Ball
+        // Ball s trail efektem
         if (ballAngleRad !== null) {
             const ballDist = R * 0.73;
             const bx = cx + Math.cos(ballAngleRad) * ballDist;
             const by = cy + Math.sin(ballAngleRad) * ballDist;
 
+            // Trail (stopy)
+            for (let i = 1; i <= 5; i++) {
+                const trailAngle = ballAngleRad - i * 0.08;
+                const tx = cx + Math.cos(trailAngle) * ballDist;
+                const ty = cy + Math.sin(trailAngle) * ballDist;
+                ctx.globalAlpha = 0.3 - i * 0.05;
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(tx, ty, 4.5 - i * 0.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+
+            // Hlavní míček
             ctx.fillStyle = '#ffffff';
             ctx.shadowColor = '#ffd700';
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = 12;
             ctx.beginPath();
-            ctx.arc(bx, by, 4.5, 0, Math.PI * 2);
+            ctx.arc(bx, by, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Odraz světla na míčku
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.beginPath();
+            ctx.arc(bx - 1.5, by - 1.5, 2, 0, Math.PI * 2);
             ctx.fill();
             ctx.shadowBlur = 0;
         }
 
-        ctx.restore();
+        // Částice
+        this.updateParticles();
+        this.drawParticles(ctx);
     }
 
     hasRouletteBet(type, val) {
@@ -1245,19 +1379,20 @@ class MerunkovaSplouchacka {
 
     addRouletteBet(type, value) {
         if (this.rSpinning) return;
-        if (this.balance < this.selectedChip) {
+        const bet = Math.max(1, Math.floor(Number(this.customRBet) || this.selectedChip));
+        if (this.balance < bet) {
             alert('Nedostatek financí pro sázku!');
             return;
         }
 
         SFX.chip();
-        this.setBalance(this.balance - this.selectedChip);
+        this.setBalance(this.balance - bet);
 
         const existing = this.rBets.find(b => b.type === type && (value === undefined || b.value === value));
         if (existing) {
-            existing.amount += this.selectedChip;
+            existing.amount += bet;
         } else {
-            this.rBets.push({ type, value, amount: this.selectedChip });
+            this.rBets.push({ type, value, amount: bet });
         }
 
         this.renderArena();
@@ -1277,6 +1412,7 @@ class MerunkovaSplouchacka {
         if (this.rSpinning || this.rBets.length === 0) return;
         this.rSpinning = true;
         this.rResultMsg = '';
+        this.rParticles = []; // Reset částic
         this.renderArena();
 
         const winIdx = Math.floor(Math.random() * this.rouletteWheelNumbers.length);
@@ -1284,14 +1420,16 @@ class MerunkovaSplouchacka {
         const sliceAngle = (Math.PI * 2) / this.rouletteWheelNumbers.length;
 
         const desiredOffset = -Math.PI / 2 - (winIdx + 0.5) * sliceAngle;
-        const extraTurns = Math.PI * 2 * 6;
+        const extraTurns = Math.PI * 2 * 8; // Více otáček
         const totalWheelDelta = extraTurns + ((desiredOffset - (this.rWheelAngle % (Math.PI * 2)) + Math.PI * 4) % (Math.PI * 2));
 
         const startWheelAngle = this.rWheelAngle;
-        const duration = 3800;
+        const duration = 5000; // Delší animace
         const startTime = performance.now();
 
         let lastTickAngle = 0;
+        let winFlash = 0;
+        let winPhase = 0; // 0 = spin, 1 = reveal, 2 = particles
 
         const animateWheel = (now) => {
             const elapsed = now - startTime;
@@ -1300,10 +1438,15 @@ class MerunkovaSplouchacka {
 
             this.rWheelAngle = startWheelAngle + totalWheelDelta * easeOut;
 
-            const ballTurns = Math.PI * 2 * 9 * (1 - easeOut);
+            // Míček s více otáčkami a realistickým pohybem
+            const ballTurns = Math.PI * 2 * 12 * (1 - easeOut);
             const ballAngle = -Math.PI / 2 + (1 - progress) * ballTurns;
 
-            this.drawRouletteCanvas(this.rWheelAngle, ballAngle);
+            // Míček se postupně blíží ke středu
+            const ballDistProgress = Math.max(0, 1 - progress * 1.5);
+            const ballDist = 0.73 - ballDistProgress * 0.15;
+
+            this.drawRouletteCanvas(this.rWheelAngle, ballAngle, winPhase >= 1 ? winNum : -1, winFlash);
 
             if (Math.abs(this.rWheelAngle - lastTickAngle) > 0.35) {
                 SFX.spinTick();
@@ -1315,7 +1458,6 @@ class MerunkovaSplouchacka {
             } else {
                 this.rSpinning = false;
                 this.rHistory.push(winNum);
-                this.drawRouletteCanvas(this.rWheelAngle, -Math.PI / 2);
 
                 const winningColor = winNum === 0 ? 'green' : (this.redNumbers.has(winNum) ? 'red' : 'black');
 
@@ -1338,20 +1480,54 @@ class MerunkovaSplouchacka {
                     }
                 }
 
+                // Animace výhry s efekty
+                winPhase = 1;
+                const cvs = document.getElementById('rouletteCanvas');
+                const cx = cvs ? cvs.width / 2 : 300;
+                const cy = cvs ? cvs.height / 2 : 300;
+
                 if (totalPayout > 0) {
-                    this.setBalance(this.balance + totalPayout);
-                    const totalWager = this.rBets.reduce((sum, bet) => sum + bet.amount, 0);
-                    this.activeCelebration = this.createWinCelebration(totalPayout, totalWager);
-                    if (this.activeCelebration.percent >= 300) SFX.bigWinFanfare(); else SFX.win();
-                    this.rResultMsg = `Zlatá kulička padla na ${winNum} (${winningColor.toUpperCase()})! Vyhráváte $${totalPayout.toLocaleString()}! 🎉`;
-                } else {
-                    SFX.lose();
-                    this.rResultMsg = `Kulička padla na číslo ${winNum} (${winningColor.toUpperCase()}).`;
+                    // Větší výhra = více částic
+                    const particleCount = Math.min(200, 50 + Math.floor(totalPayout / 100));
+                    const colors = ['#ffd700', '#ff6b35', '#ff4444', '#ffffff', '#ffaa00', '#ff00ff'];
+                    this.spawnWinParticles(cx, cy, particleCount, colors);
                 }
 
-                this.rBets = [];
-                if (this.activeCelebration) this.render();
-                else { this.renderArena(); this.drawRouletteCanvas(this.rWheelAngle); }
+                // Animace flash efektu
+                const flashDuration = 2000;
+                const flashStart = performance.now();
+
+                const animateWin = (now) => {
+                    const flashElapsed = now - flashStart;
+                    const flashProgress = Math.min(1, flashElapsed / flashDuration);
+
+                    // Flash bliká 3x
+                    winFlash = Math.max(0, Math.sin(flashProgress * Math.PI * 6) * (1 - flashProgress));
+
+                    this.drawRouletteCanvas(this.rWheelAngle, -Math.PI / 2, winNum, winFlash);
+
+                    if (flashProgress < 1) {
+                        requestAnimationFrame(animateWin);
+                    } else {
+                        // Finální stav
+                        if (totalPayout > 0) {
+                            this.setBalance(this.balance + totalPayout);
+                            const totalWager = this.rBets.reduce((sum, bet) => sum + bet.amount, 0);
+                            this.activeCelebration = this.createWinCelebration(totalPayout, totalWager);
+                            if (this.activeCelebration.percent >= 300) SFX.bigWinFanfare(); else SFX.win();
+                            this.rResultMsg = `Zlatá kulička padla na ${winNum} (${winningColor.toUpperCase()})! Vyhráváte $${totalPayout.toLocaleString()}! 🎉`;
+                        } else {
+                            SFX.lose();
+                            this.rResultMsg = `Kulička padla na číslo ${winNum} (${winningColor.toUpperCase()}).`;
+                        }
+
+                        this.rBets = [];
+                        if (this.activeCelebration) this.render();
+                        else { this.renderArena(); this.drawRouletteCanvas(this.rWheelAngle); }
+                    }
+                };
+
+                requestAnimationFrame(animateWin);
             }
         };
 
@@ -1478,11 +1654,13 @@ class MerunkovaSplouchacka {
         document.querySelectorAll('[data-autospin]').forEach(btn => btn.addEventListener('click', () => { this.autoSpinRemaining = Number(btn.dataset.autospin); this.runAutoSpin(); }));
         document.getElementById('btnStopAuto')?.addEventListener('click', () => { this.autoSpinRemaining = 0; this.renderArena(); });
 
+        document.getElementById('bjCustomBet')?.addEventListener('input', e => { this.customBjBet = Math.max(1, Math.floor(Number(e.target.value) || 1)); });
         document.getElementById('btnBjDeal')?.addEventListener('click', () => this.bjDeal());
         document.getElementById('btnBjHit')?.addEventListener('click', () => this.bjHit());
         document.getElementById('btnBjStand')?.addEventListener('click', () => this.bjStand());
         document.getElementById('btnBjDouble')?.addEventListener('click', () => this.bjDouble());
 
+        document.getElementById('bacCustomBet')?.addEventListener('input', e => { this.customBacBet = Math.max(1, Math.floor(Number(e.target.value) || 1)); });
         document.querySelectorAll('[data-bac-bet]').forEach(el => {
             el.addEventListener('click', () => {
                 const betType = el.dataset.bacBet;
@@ -1491,6 +1669,7 @@ class MerunkovaSplouchacka {
         });
         document.getElementById('btnBacDeal')?.addEventListener('click', () => this.dealBaccarat());
 
+        document.getElementById('rCustomBet')?.addEventListener('input', e => { this.customRBet = Math.max(1, Math.floor(Number(e.target.value) || 1)); });
         document.querySelectorAll('[data-r-type]').forEach(el => {
             el.addEventListener('click', () => {
                 const target = el;

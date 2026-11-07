@@ -16,20 +16,434 @@
     --palace-glow: rgba(255, 215, 0, 0.35);
 }
 
-#festivalCanvas {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    pointer-events: none;
+/* ============================================================
+   2D Čínský drakový lampionový festival - pozadí
+   ============================================================ */
+
+/* Hlavní pozadí stránky */
+body {
+    background: linear-gradient(180deg, #1a0a0e 0%, #2d0f14 30%, #1a0a0e 60%, #0d0508 100%);
+    min-height: 100vh;
 }
 
-#festivalCanvas { display:none; }
-.casino-3d-world { position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.92; }
-body:has(.casino-3d-world) { background:radial-gradient(ellipse at 52% 14%,#182032 0%,#0a0d17 48%,#08090e 100%); }
-body:has(.casino-3d-world) > .container { position:relative;z-index:1; }
-body.casino-3d-fallback { background:radial-gradient(ellipse at 50% 0,#263047,#10111a 55%,#08090e); }
+/* Kontejner pro 2D pozadí */
+.festival-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Obloha s hvězdami - více hvězd */
+.festival-sky {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(2px 2px at 5% 8%, rgba(255, 220, 180, 0.7), transparent),
+        radial-gradient(1px 1px at 12% 15%, rgba(255, 200, 150, 0.5), transparent),
+        radial-gradient(2px 2px at 18% 25%, rgba(255, 180, 120, 0.6), transparent),
+        radial-gradient(1px 1px at 25% 5%, rgba(255, 210, 170, 0.4), transparent),
+        radial-gradient(2px 2px at 30% 18%, rgba(255, 190, 140, 0.7), transparent),
+        radial-gradient(1px 1px at 35% 35%, rgba(255, 200, 160, 0.5), transparent),
+        radial-gradient(2px 2px at 40% 12%, rgba(255, 180, 130, 0.6), transparent),
+        radial-gradient(1px 1px at 45% 28%, rgba(255, 210, 170, 0.4), transparent),
+        radial-gradient(2px 2px at 50% 8%, rgba(255, 190, 150, 0.7), transparent),
+        radial-gradient(1px 1px at 55% 22%, rgba(255, 200, 160, 0.5), transparent),
+        radial-gradient(2px 2px at 60% 38%, rgba(255, 180, 120, 0.6), transparent),
+        radial-gradient(1px 1px at 65% 15%, rgba(255, 210, 170, 0.4), transparent),
+        radial-gradient(2px 2px at 70% 30%, rgba(255, 190, 140, 0.7), transparent),
+        radial-gradient(1px 1px at 75% 10%, rgba(255, 200, 160, 0.5), transparent),
+        radial-gradient(2px 2px at 80% 25%, rgba(255, 180, 130, 0.6), transparent),
+        radial-gradient(1px 1px at 85% 42%, rgba(255, 210, 170, 0.4), transparent),
+        radial-gradient(2px 2px at 90% 18%, rgba(255, 190, 150, 0.7), transparent),
+        radial-gradient(1px 1px at 95% 35%, rgba(255, 200, 160, 0.5), transparent),
+        radial-gradient(1px 1px at 8% 45%, rgba(255, 180, 120, 0.4), transparent),
+        radial-gradient(2px 2px at 22% 50%, rgba(255, 210, 170, 0.6), transparent),
+        radial-gradient(1px 1px at 38% 48%, rgba(255, 190, 140, 0.5), transparent),
+        radial-gradient(2px 2px at 52% 45%, rgba(255, 200, 160, 0.4), transparent),
+        radial-gradient(1px 1px at 68% 48%, rgba(255, 180, 130, 0.6), transparent),
+        radial-gradient(2px 2px at 82% 52%, rgba(255, 210, 170, 0.5), transparent),
+        radial-gradient(1px 1px at 95% 48%, rgba(255, 190, 150, 0.4), transparent),
+        radial-gradient(1px 1px at 15% 55%, rgba(255, 200, 160, 0.5), transparent),
+        radial-gradient(2px 2px at 45% 55%, rgba(255, 180, 120, 0.4), transparent),
+        radial-gradient(1px 1px at 75% 58%, rgba(255, 210, 170, 0.6), transparent);
+    animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Měsíc na obloze */
+.festival-moon {
+    position: absolute;
+    top: 8%;
+    right: 15%;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff8e7, #ffe4b5, #ffd700);
+    box-shadow:
+        0 0 30px rgba(255, 215, 0, 0.4),
+        0 0 60px rgba(255, 215, 0, 0.2),
+        0 0 100px rgba(255, 215, 0, 0.1);
+    animation: moonGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes moonGlow {
+    0% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 215, 0, 0.2), 0 0 100px rgba(255, 215, 0, 0.1); }
+    100% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.3), 0 0 120px rgba(255, 215, 0, 0.15); }
+}
+
+/* Lampiony - různé velikosti a pozice */
+.lantern {
+    position: absolute;
+    animation: lanternFloat 8s ease-in-out infinite;
+}
+
+.lantern-body {
+    position: relative;
+    width: 40px;
+    height: 50px;
+    background: linear-gradient(180deg, #ff6b35, #e63946, #c1121f);
+    border-radius: 50% / 60%;
+    box-shadow:
+        inset -5px -5px 15px rgba(0, 0, 0, 0.3),
+        inset 5px 5px 15px rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(255, 107, 53, 0.6),
+        0 0 40px rgba(255, 107, 53, 0.3);
+    overflow: hidden;
+}
+
+.lantern-body::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 30px;
+    background: radial-gradient(ellipse, rgba(255, 255, 200, 0.8), rgba(255, 200, 100, 0.4), transparent);
+    border-radius: 50%;
+    animation: lanternGlow 2s ease-in-out infinite alternate;
+}
+
+.lantern-top {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 8px;
+    background: linear-gradient(180deg, #ffd700, #d4af37);
+    border-radius: 3px 3px 0 0;
+}
+
+.lantern-bottom {
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 12px;
+    background: #ffd700;
+}
+
+.lantern-tassel {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 10px;
+    background: linear-gradient(180deg, #ffd700, #ff6b35);
+    border-radius: 0 0 4px 4px;
+    animation: tasselSway 3s ease-in-out infinite;
+}
+
+@keyframes lanternGlow {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+@keyframes tasselSway {
+    0%, 100% { transform: translateX(-50%) rotate(-5deg); }
+    50% { transform: translateX(-50%) rotate(5deg); }
+}
+
+@keyframes lanternFloat {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    25% { transform: translateY(-15px) translateX(5px); }
+    50% { transform: translateY(-5px) translateX(-5px); }
+    75% { transform: translateY(-20px) translateX(3px); }
+}
+
+/* Různé pozice lampionů - 25 kusů po celé stránce */
+.lantern-1 { top: 8%; left: 3%; animation-delay: 0s; }
+.lantern-2 { top: 15%; left: 92%; animation-delay: -2s; }
+.lantern-3 { top: 25%; left: 8%; animation-delay: -4s; }
+.lantern-4 { top: 12%; left: 78%; animation-delay: -1s; }
+.lantern-5 { top: 30%; left: 95%; animation-delay: -3s; }
+.lantern-6 { top: 18%; left: 5%; animation-delay: -5s; }
+.lantern-7 { top: 35%; left: 85%; animation-delay: -2.5s; }
+.lantern-8 { top: 5%; left: 48%; animation-delay: -1.5s; }
+.lantern-9 { top: 22%; left: 42%; animation-delay: -0.5s; }
+.lantern-10 { top: 28%; left: 55%; animation-delay: -3.5s; }
+.lantern-11 { top: 8%; left: 65%; animation-delay: -6s; }
+.lantern-12 { top: 40%; left: 12%; animation-delay: -4.5s; }
+.lantern-13 { top: 15%; left: 30%; animation-delay: -2.8s; }
+.lantern-14 { top: 45%; left: 75%; animation-delay: -1.2s; }
+.lantern-15 { top: 10%; left: 20%; animation-delay: -5.5s; }
+.lantern-16 { top: 38%; left: 92%; animation-delay: -0.8s; }
+.lantern-17 { top: 20%; left: 58%; animation-delay: -3.2s; }
+.lantern-18 { top: 50%; left: 35%; animation-delay: -4.2s; }
+.lantern-19 { top: 12%; left: 88%; animation-delay: -6.5s; }
+.lantern-20 { top: 42%; left: 5%; animation-delay: -1.8s; }
+.lantern-21 { top: 55%; left: 68%; animation-delay: -2.2s; }
+.lantern-22 { top: 32%; left: 25%; animation-delay: -5.8s; }
+.lantern-23 { top: 48%; left: 82%; animation-delay: -0.3s; }
+.lantern-24 { top: 60%; left: 15%; animation-delay: -3.8s; }
+.lantern-25 { top: 52%; left: 50%; animation-delay: -4.8s; }
+
+/* Velké lampiony */
+.lantern-large .lantern-body {
+    width: 60px;
+    height: 75px;
+}
+
+.lantern-large .lantern-top {
+    width: 22px;
+    height: 12px;
+    top: -12px;
+}
+
+.lantern-large .lantern-bottom {
+    height: 18px;
+    bottom: -18px;
+}
+
+.lantern-large .lantern-tassel {
+    width: 12px;
+    height: 15px;
+    bottom: -30px;
+}
+
+/* Malé lampiony */
+.lantern-small .lantern-body {
+    width: 25px;
+    height: 32px;
+}
+
+.lantern-small .lantern-top {
+    width: 10px;
+    height: 5px;
+    top: -5px;
+}
+
+.lantern-small .lantern-bottom {
+    height: 8px;
+    bottom: -8px;
+}
+
+.lantern-small .lantern-tassel {
+    width: 5px;
+    height: 6px;
+    bottom: -14px;
+}
+
+/* Zlaté lampiony */
+.lantern-gold .lantern-body {
+    background: linear-gradient(180deg, #ffd700, #d4af37, #b8860b);
+    box-shadow:
+        inset -5px -5px 15px rgba(0, 0, 0, 0.3),
+        inset 5px 5px 15px rgba(255, 255, 255, 0.3),
+        0 0 20px rgba(255, 215, 0, 0.6),
+        0 0 40px rgba(255, 215, 0, 0.3);
+}
+
+/* Zelené lampiony */
+.lantern-green .lantern-body {
+    background: linear-gradient(180deg, #2ecc71, #27ae60, #1e8449);
+    box-shadow:
+        inset -5px -5px 15px rgba(0, 0, 0, 0.3),
+        inset 5px 5px 15px rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(46, 204, 113, 0.6),
+        0 0 40px rgba(46, 204, 113, 0.3);
+}
+
+/* Ohňostroj - částice */
+.firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: fireworkExplode 3s ease-out infinite;
+}
+
+@keyframes fireworkExplode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Ohňostroj - různé barvy a pozice */
+.firework-1 { top: 20%; left: 30%; background: #ff6b35; --tx: -30px; --ty: -40px; animation-delay: 0s; }
+.firework-2 { top: 20%; left: 30%; background: #ffd700; --tx: 25px; --ty: -35px; animation-delay: 0.1s; }
+.firework-3 { top: 20%; left: 30%; background: #e63946; --tx: -20px; --ty: 30px; animation-delay: 0.2s; }
+.firework-4 { top: 20%; left: 30%; background: #2ecc71; --tx: 35px; --ty: 25px; animation-delay: 0.3s; }
+
+.firework-5 { top: 15%; left: 70%; background: #9b59b6; --tx: -25px; --ty: -35px; animation-delay: 1.5s; }
+.firework-6 { top: 15%; left: 70%; background: #3498db; --tx: 30px; --ty: -30px; animation-delay: 1.6s; }
+.firework-7 { top: 15%; left: 70%; background: #f39c12; --tx: -35px; --ty: 25px; animation-delay: 1.7s; }
+.firework-8 { top: 15%; left: 70%; background: #e74c3c; --tx: 20px; --ty: 35px; animation-delay: 1.8s; }
+
+.firework-9 { top: 25%; left: 50%; background: #1abc9c; --tx: -40px; --ty: -25px; animation-delay: 3s; }
+.firework-10 { top: 25%; left: 50%; background: #e67e22; --tx: 35px; --ty: -30px; animation-delay: 3.1s; }
+.firework-11 { top: 25%; left: 50%; background: #ff69b4; --tx: -25px; --ty: 35px; animation-delay: 3.2s; }
+.firework-12 { top: 25%; left: 50%; background: #00ff88; --tx: 30px; --ty: 25px; animation-delay: 3.3s; }
+
+/* ============================================================
+   Mraky plávající po obloze
+   ============================================================ */
+
+.cloud {
+    position: absolute;
+    background: radial-gradient(ellipse, rgba(30, 15, 20, 0.4), transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    animation: cloudDrift linear infinite;
+}
+
+.cloud-1 {
+    top: 5%;
+    left: -10%;
+    width: 300px;
+    height: 80px;
+    animation-duration: 60s;
+    opacity: 0.5;
+}
+
+.cloud-2 {
+    top: 15%;
+    left: -15%;
+    width: 400px;
+    height: 100px;
+    animation-duration: 80s;
+    animation-delay: -20s;
+    opacity: 0.3;
+}
+
+.cloud-3 {
+    top: 25%;
+    left: -8%;
+    width: 250px;
+    height: 60px;
+    animation-duration: 50s;
+    animation-delay: -35s;
+    opacity: 0.4;
+}
+
+.cloud-4 {
+    top: 10%;
+    left: -12%;
+    width: 350px;
+    height: 90px;
+    animation-duration: 70s;
+    animation-delay: -10s;
+    opacity: 0.35;
+}
+
+.cloud-5 {
+    top: 35%;
+    left: -10%;
+    width: 280px;
+    height: 70px;
+    animation-duration: 55s;
+    animation-delay: -45s;
+    opacity: 0.25;
+}
+
+@keyframes cloudDrift {
+    0% { left: -15%; transform: scaleX(1); }
+    50% { transform: scaleX(1.1); }
+    100% { left: 115%; transform: scaleX(1); }
+}
+
+/* ============================================================
+   Čínské budovy a stromy v siluetě na spodku
+   ============================================================ */
+
+.chinese-buildings {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    z-index: 0;
+}
+
+/* Siluety stromů */
+.trees-silhouette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background:
+        radial-gradient(ellipse 30px 80px at 5% 100%, #0d0508 80%, transparent 80%),
+        radial-gradient(ellipse 25px 70px at 12% 100%, #0d0508 80%, transparent 80%),
+        radial-gradient(ellipse 35px 90px at 20% 100%, #0d0508 80%, transparent 80%),
+        radial-gradient(ellipse 28px 75px at 85% 100%, #0d0508 80%, transparent 80%),
+        radial-gradient(ellipse 32px 85px at 92% 100%, #0d0508 80%, transparent 80%),
+        radial-gradient(ellipse 22px 65px at 97% 100%, #0d0508 80%, transparent 80%);
+}
+
+/* Země/hory na spodku */
+.festival-ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, transparent, #0d0508 40%, #0a0306);
+}
+
+/* Kouř z lampionů - jemné částice */
+.smoke-particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: smokeRise 6s ease-out infinite;
+}
+
+@keyframes smokeRise {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100px) scale(3);
+        opacity: 0;
+    }
+}
+
+/* Kontejner pro obsah - nad pozadím */
+body > .container {
+    position: relative;
+    z-index: 1;
+}
 .palace-header,.palace-tabs,.palace-arena { background-color:rgba(14,10,14,.78);backdrop-filter:blur(12px); }
 .palace-ambience { opacity:.55; }
 .outside-palace-btn .roulette-chip-stack { left:auto;right:5px;top:4px;transform:none;flex-direction:row;gap:2px; }
@@ -55,9 +469,9 @@ body.casino-3d-fallback { background:radial-gradient(ellipse at 50% 0,#263047,#1
     inset: 0;
     pointer-events: none;
     background:
-        radial-gradient(circle at 15% 20%, rgba(220, 38, 38, 0.15), transparent 45%),
-        radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.15), transparent 45%),
-        radial-gradient(circle at 50% 90%, rgba(185, 28, 28, 0.2), transparent 50%);
+        radial-gradient(circle at 20% 15%, rgba(180, 30, 30, 0.12), transparent 50%),
+        radial-gradient(circle at 80% 10%, rgba(200, 120, 20, 0.08), transparent 45%),
+        radial-gradient(circle at 50% 95%, rgba(140, 20, 20, 0.15), transparent 55%);
     z-index: -1;
 }
 
@@ -1508,5 +1922,301 @@ body.casino-3d-fallback { background:radial-gradient(ellipse at 50% 0,#263047,#1
     }
     .baccarat-sides {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Music Player - Floating Widget
+   ========================================================================== */
+
+.music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 320px;
+    background: linear-gradient(180deg, rgba(45, 10, 14, 0.95) 0%, rgba(20, 4, 6, 0.98) 100%);
+    border: 2px solid var(--palace-gold);
+    border-radius: 18px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.15);
+    backdrop-filter: blur(12px);
+    font-family: "Cinzel", "Inter", Georgia, serif;
+    color: #fef08a;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    user-select: none;
+}
+
+.music-player.minimized {
+    transform: translateY(calc(100% - 52px));
+}
+
+.music-player-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+    border: none;
+    width: 100%;
+    color: #ffd700;
+    font-family: inherit;
+}
+
+.music-player-toggle:hover {
+    color: #ffe18b;
+}
+
+.music-player-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.music-player-title-icon {
+    font-size: 1.1rem;
+}
+
+.music-player-chevron {
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.music-player.minimized .music-player-chevron {
+    transform: rotate(180deg);
+}
+
+.music-player-body {
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+    max-height: 300px;
+    opacity: 1;
+    margin-top: 0.8rem;
+}
+
+.music-player.minimized .music-player-body {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+}
+
+/* Now Playing */
+.music-player-now {
+    text-align: center;
+    margin-bottom: 0.8rem;
+}
+
+.music-player-track-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #ffd700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+.music-player-progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 215, 0, 0.15);
+    border-radius: 2px;
+    margin-top: 0.4rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.music-player-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #d97706, #ffd700);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.music-player-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: rgba(254, 240, 138, 0.6);
+    margin-top: 0.2rem;
+}
+
+/* Controls */
+.music-player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+}
+
+.music-player-btn {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: #fef08a;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.music-player-btn:hover {
+    background: rgba(255, 215, 0, 0.25);
+    border-color: #ffd700;
+    color: #ffd700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+.music-player-btn:active {
+    transform: scale(0.92);
+}
+
+.music-player-btn.play-btn {
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
+    background: linear-gradient(145deg, rgba(217, 119, 6, 0.4), rgba(255, 215, 0, 0.2));
+    border-color: var(--palace-gold);
+}
+
+.music-player-btn.play-btn:hover {
+    background: linear-gradient(145deg, rgba(217, 119, 6, 0.6), rgba(255, 215, 0, 0.35));
+}
+
+/* Volume */
+.music-player-volume {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.music-player-volume-icon {
+    font-size: 1rem;
+    cursor: pointer;
+    color: #fef08a;
+    transition: color 0.2s ease;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+}
+
+.music-player-volume-icon:hover {
+    color: #ffd700;
+}
+
+.music-player-volume-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: rgba(255, 215, 0, 0.15);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.music-player-volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ffd700;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+    transition: transform 0.15s ease;
+}
+
+.music-player-volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.music-player-volume-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ffd700;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+}
+
+/* Playlist */
+.music-player-playlist {
+    margin-top: 0.8rem;
+    max-height: 120px;
+    overflow-y: auto;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+    padding-top: 0.5rem;
+}
+
+.music-player-playlist::-webkit-scrollbar {
+    width: 4px;
+}
+
+.music-player-playlist::-webkit-scrollbar-track {
+    background: rgba(255, 215, 0, 0.05);
+    border-radius: 2px;
+}
+
+.music-player-playlist::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.3);
+    border-radius: 2px;
+}
+
+.music-player-playlist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 0.72rem;
+    color: rgba(254, 240, 138, 0.7);
+}
+
+.music-player-playlist-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+    color: #fef08a;
+}
+
+.music-player-playlist-item.active {
+    background: rgba(255, 215, 0, 0.15);
+    color: #ffd700;
+    font-weight: 600;
+}
+
+.music-player-playlist-item-icon {
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.music-player-playlist-item-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .music-player {
+        width: 280px;
+        bottom: 10px;
+        right: 10px;
+        padding: 0.8rem 1rem;
     }
 }

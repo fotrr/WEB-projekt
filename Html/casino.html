@@ -27,10 +27,224 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="../node_modules/gsap/dist/gsap.min.js" defer></script>
-    <script type="module" src="../JS/casino3d.bundle.js"></script>
+    <script type="module" src="../JS/casino3d.js"></script>
     <script src="../JS/casino.js" defer></script>
+    <script src="../JS/music-player.js" defer></script>
 </head>
 <body>
+
+<!-- 2D Čínský drakový lampionový festival - pozadí -->
+<div class="festival-background" aria-hidden="true">
+    <!-- Obloha s hvězdami -->
+    <div class="festival-sky"></div>
+    
+    <!-- Měsíc -->
+    <div class="festival-moon"></div>
+    
+    <!-- Mraky -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="cloud cloud-4"></div>
+    <div class="cloud cloud-5"></div>
+    
+    <!-- Lampiony - mnoho různých -->
+    <div class="lantern lantern-1 lantern-large">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-2">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-3 lantern-gold lantern-small">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-4 lantern-large">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-5 lantern-green">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-6 lantern-small">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-7 lantern-gold">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-8 lantern-small lantern-green">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <!-- Další lampiony - více po celé stránce -->
+    <div class="lantern lantern-9 lantern-large lantern-gold">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-10">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-11 lantern-small">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-12 lantern-green lantern-large">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-13 lantern-gold">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-14 lantern-small lantern-green">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-15">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-16 lantern-large">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-17 lantern-small lantern-gold">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-18">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-19 lantern-green">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-20 lantern-large lantern-gold">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-21 lantern-small">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-22 lantern-green lantern-small">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-23">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-24 lantern-large">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern lantern-25 lantern-gold lantern-small">
+        <div class="lantern-top"></div>
+        <div class="lantern-body"></div>
+        <div class="lantern-bottom"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <!-- Ohňostroj -->
+    <div class="firework firework-1"></div>
+    <div class="firework firework-2"></div>
+    <div class="firework firework-3"></div>
+    <div class="firework firework-4"></div>
+    <div class="firework firework-5"></div>
+    <div class="firework firework-6"></div>
+    <div class="firework firework-7"></div>
+    <div class="firework firework-8"></div>
+    <div class="firework firework-9"></div>
+    <div class="firework firework-10"></div>
+    <div class="firework firework-11"></div>
+    <div class="firework firework-12"></div>
+    
+    <!-- Siluety stromů -->
+    <div class="trees-silhouette"></div>
+    
+    <!-- Zem na spodku -->
+    <div class="festival-ground"></div>
+</div>
 
 <div class="container py-4">
 
